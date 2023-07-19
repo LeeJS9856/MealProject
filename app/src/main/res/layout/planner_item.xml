@@ -65,7 +65,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/img_empty_button"/>
+                android:layout_marginStart="10dp"
+                android:text="메인메뉴 \n메인메뉴 \n서브메뉴"
+                android:gravity="center"
+                android:textSize="30sp"
+
+                />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -127,8 +132,11 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/img_empty_button"/>
+                android:text="메인메뉴 \n메인메뉴 \n서브메뉴"
+                android:textSize="30sp"
+                android:gravity="center"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -191,7 +199,10 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/img_empty_button"/>
+                android:layout_marginStart="10dp"
+                android:text="메인메뉴 \n메인메뉴 \n서브메뉴"
+                android:textSize="30sp"
+                android:gravity="center"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
