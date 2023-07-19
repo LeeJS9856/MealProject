@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/today"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="today date"
+        android:fontFamily="@font/kopubdotumbold"
+        android:textSize="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft = "true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/reset_button"
+            android:text="초기화"
+            android:textSize="18sp"
+            android:textColor = "@android:color/white"
+            android:fontFamily="@font/kopubdotumbold"
+            />
+
+        <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
+            android:id="@+id/group_choices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="41dp"
+
+            android:layout_marginBottom="10dp"
+            app:tbgCheckedButton="@+id/choice_daily">
+
+            <com.nex3z.togglebuttongroup.button.CircularToggle
+                android:id="@+id/choice_daily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kopubdotumbold"
+                android:text="D"
+                android:textSize="25sp" />
+
+            <com.nex3z.togglebuttongroup.button.CircularToggle
+                android:id="@+id/choice_weekly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/kopubdotumbold"
+                android:text="W"
+                android:textSize="25sp" />
+
+            <!--...-->
+
+        </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+</LinearLayout>
