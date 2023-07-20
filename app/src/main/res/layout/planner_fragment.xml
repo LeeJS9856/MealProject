@@ -2,19 +2,13 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".PlannerFragment">
 
-    <TextView
-        android:id="@+id/today"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="today date"
-        android:fontFamily="@font/kopubdotumbold"
-        android:textSize="25dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"/>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,11 +16,12 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/reset_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft = "true"
             android:layout_centerVertical="true"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
             android:background="@drawable/reset_button"
             android:text="초기화"
@@ -34,6 +29,20 @@
             android:textColor = "@android:color/white"
             android:fontFamily="@font/kopubdotumbold"
             />
+
+        <TextView
+            android:id="@+id/today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="157dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="158dp"
+            android:layout_toRightOf="@id/reset_button"
+            android:fontFamily="@font/kopubdotumbold"
+            android:text="today date"
+            android:textSize="20dp" />
 
         <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
             android:id="@+id/group_choices"
@@ -73,6 +82,7 @@
     </RelativeLayout>
 
     <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

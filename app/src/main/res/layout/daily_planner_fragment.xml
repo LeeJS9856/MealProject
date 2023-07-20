@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:visibility="visible">
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/braakfastCardView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="8dp"
+
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
@@ -66,9 +65,9 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginStart="10dp"
-                android:text="메인메뉴 \n메인메뉴 \n서브메뉴"
+                android:text="메인메뉴\n메인메뉴\n서브메뉴"
                 android:gravity="center"
-                android:textSize="30sp"
+                android:textSize="25sp"
 
                 />
         </LinearLayout>
@@ -106,7 +105,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/img_filled_button"
                     android:gravity="center"
-                    android:text="조식"
+                    android:text="중식"
                     android:textSize="30sp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/kopubdotumbold"/>
@@ -134,8 +133,8 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="메인메뉴 \n메인메뉴 \n서브메뉴"
-                android:textSize="30sp"
+                android:text="메인메뉴\n메인메뉴\n서브메뉴"
+                android:textSize="25sp"
                 android:gravity="center"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -148,7 +147,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         app:cardBackgroundColor="#FFFFFFFF"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp">
@@ -172,7 +171,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/img_filled_button"
                     android:gravity="center"
-                    android:text="조식"
+                    android:text="석식"
                     android:textSize="30sp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/kopubdotumbold"/>
@@ -200,8 +199,8 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginStart="10dp"
-                android:text="메인메뉴 \n메인메뉴 \n서브메뉴"
-                android:textSize="30sp"
+                android:text="메인메뉴\n메인메뉴\n서브메뉴"
+                android:textSize="25sp"
                 android:gravity="center"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
