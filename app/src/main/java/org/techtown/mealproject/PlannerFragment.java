@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +16,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.tabs.TabLayout;
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup;
+import com.nex3z.togglebuttongroup.button.CircularToggle;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,6 +29,7 @@ public class PlannerFragment extends Fragment {
     Context context;
     TabLayout.OnTabSelectedListener listener;
     DailyPlannerFragment dailyPlannerFragment;
+    WeeklyPlannerFragment weeklyPlannerFragment;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -52,6 +57,7 @@ public class PlannerFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.planner_fragment, container, false);
 
         dailyPlannerFragment = new DailyPlannerFragment();
+        weeklyPlannerFragment = new WeeklyPlannerFragment();
         getChildFragmentManager().beginTransaction().replace(R.id.container, dailyPlannerFragment).commit();
 
         initUI(rootView);
@@ -71,15 +77,39 @@ public class PlannerFragment extends Fragment {
             Toast.makeText(getContext(), "초기화 하시겠습니까?", Toast.LENGTH_LONG).show();
         });
 
+        TextView DailyText = rootView.findViewById(R.id.Daily);
+        TextView WeeklyText = rootView.findViewById(R.id.Weekly);
 
-        SingleSelectToggleGroup single = rootView.findViewById(R.id.group_choices);
-        single.setOnCheckedChangeListener((group, checkedId) -> {
-            if(single.getCheckedId()==1)
-            {
-                getChildFragmentManager().beginTransaction().replace(R.id.container, dailyPlannerFragment).commit();
-                Toast.makeText(getContext(), "daily선택 "+single.getCheckedId() , Toast.LENGTH_LONG).show();
-            }
+        DailyText.setOnClickListener(v ->
+        {
+            setXMLToggle(false, rootView);
+            getChildFragmentManager().beginTransaction().replace(R.id.container, dailyPlannerFragment).commitAllowingStateLoss();
         });
+        WeeklyText.setOnClickListener(v ->
+        {
+            setXMLToggle(true, rootView);
+            getChildFragmentManager().beginTransaction().replace(R.id.container, weeklyPlannerFragment).commitAllowingStateLoss();
+        });
+
     }
+    private void setXMLToggle(boolean isViewClicked, ViewGroup rootView)
+    {
+        TextView DailyText = rootView.findViewById(R.id.Daily);
+        TextView WeeklyText = rootView.findViewById(R.id.Weekly);
+
+        if(isViewClicked) {
+            DailyText.setTextColor(getResources().getColor(R.color.gray));
+            DailyText.setBackgroundResource(0);
+            WeeklyText.setTextColor(getResources().getColor(R.color.white));
+            WeeklyText.setBackgroundResource(R.drawable.switch_btn_bg_on);
+        }
+        else {
+            DailyText.setTextColor(getResources().getColor(R.color.white));
+            DailyText.setBackgroundResource((R.drawable.switch_btn_bg_on));
+            WeeklyText.setTextColor(getResources().getColor(R.color.gray));
+            WeeklyText.setBackgroundResource(0);
+        }
+    }
+
 
 }
