@@ -14,8 +14,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
-    private FragmentManager fragmentManager = getSupportFragmentManager();
-    private PlannerFragment plannerFragment = new PlannerFragment();
+    private final FragmentManager fragmentManager = getSupportFragmentManager();
+    private final PlannerFragment plannerFragment = new PlannerFragment();
+    private final EditPlanFragment addPlanFragment = new EditPlanFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.planEditTab:
-
+                    transaction.replace(R.id.container,addPlanFragment ).commitAllowingStateLoss();
+                    Log.d("tab", "2번 탭 실행 됨".toString());
                     break;
 
                 case R.id.addMenuTab:

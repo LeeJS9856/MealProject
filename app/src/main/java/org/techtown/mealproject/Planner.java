@@ -2,26 +2,34 @@ package org.techtown.mealproject;
 
 public class Planner {
     int _id;
+    String week;
     String categorie;
-    String bre_menu;
-    String lun_menu;
-    String din_menu;
+    String time;
+    String menu;
+    String mainsub;
 
-    public Planner(int _id, String categorie, String bre_menu, String lun_menu, String din_menu)
+    public Planner(String week, String time, String categorie, String mainsub, String menu)
     {
-        this._id = _id;
+        //this._id = _id; 위에 int _id 추가할것
+        this.week = week;
         this.categorie = categorie;
-        this.bre_menu = bre_menu;
-        this.lun_menu = lun_menu;
-        this.din_menu = din_menu;
+        this.mainsub = mainsub;
+        this.time = time;
+        this.menu = menu;
+    }
+    public Planner()
+    {
+        //_id =
+
+
     }
 
-    public int get_id() {
-        return _id;
+    public String getWeek() {
+        return week;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setWeek(String week) {
+        this.week = week;
     }
 
     public String getCategorie() {
@@ -32,27 +40,27 @@ public class Planner {
         this.categorie = categorie;
     }
 
-    public String getBre_menu() {
-        return bre_menu;
+    public String getTime() {
+        return time;
     }
 
-    public void setBre_menu(String bre_menu) {
-        this.bre_menu = bre_menu;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public String getLun_menu() {
-        return lun_menu;
+    public String getMenu() {
+        return menu;
     }
 
-    public void setLun_menu(String lun_menu) {
-        this.lun_menu = lun_menu;
+    public void setMenu(String menu) {
+        this.menu = menu;
     }
 
-    public String getDin_menu() {
-        return din_menu;
+    public String getMainsub() {
+        return mainsub;
     }
 
-    public void setDin_menu(String din_menu) {
-        this.din_menu = din_menu;
+    public void setMainsub(String mainsub) {
+        this.mainsub = mainsub;
     }
 }
