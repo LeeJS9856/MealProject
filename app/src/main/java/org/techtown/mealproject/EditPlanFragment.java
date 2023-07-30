@@ -26,8 +26,14 @@ public class EditPlanFragment extends Fragment {
     TabLayout.OnTabSelectedListener listener;
     private final String TAG = this.getClass().getSimpleName();
     private List<String> weeklist = new ArrayList<>(List.of("일요일", "월요일", "화요일", "수요일", "목요일", "금요일"));
-    private Spinner spinner;
+
+    private List<String> timeList = new ArrayList<>(List.of("조식", "중식", "석식"));
+    private Spinner weekSpinner;
+
+    private Spinner timeSpinner;
     private DayOfWeekAdapter weekAdapter;
+
+    private DayOfWeekAdapter timeAdapter;
     private String selectedItem;
 
     public void onAttach(@NonNull Context context) {
@@ -56,14 +62,23 @@ public class EditPlanFragment extends Fragment {
     }
 
     public void initUI(ViewGroup rootView){
-        spinner = rootView.findViewById(R.id.WeekSpinner);
+        weekSpinner = rootView.findViewById(R.id.WeekSpinner);
         weekAdapter = new DayOfWeekAdapter(context, weeklist);
-        spinner.setAdapter(weekAdapter);
+        timeSpinner = rootView.findViewById(R.id.TimeSpinner);
+        timeAdapter = new DayOfWeekAdapter(context, timeList);
 
+
+        initSpinner(rootView, weekAdapter, weekSpinner, weeklist);
+        initSpinner(rootView, timeAdapter, timeSpinner, timeList);
+
+    }
+
+    public void initSpinner(ViewGroup rootView, DayOfWeekAdapter adapter,Spinner spinner, List<String> list) {
+        spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedItem = weekAdapter.getItem();
+                selectedItem = adapter.getItem();
                 String getItem = (String) spinner.getItemAtPosition(position);
                 Log.d(TAG, "선택아이템 " + getItem);
             }
@@ -73,7 +88,5 @@ public class EditPlanFragment extends Fragment {
 
             }
         });
-
-
     }
 }
