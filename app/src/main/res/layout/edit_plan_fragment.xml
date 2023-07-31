@@ -8,6 +8,7 @@
     android:paddingTop="50dp"
     android:paddingStart="30dp"
     android:paddingEnd="30dp"
+    android:paddingBottom="50dp"
     android:background="@drawable/bg_gradation"
     tools:context=".EditPlanFragment"
     >
@@ -81,8 +82,13 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/line_white"
         />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/editPlanRecyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
