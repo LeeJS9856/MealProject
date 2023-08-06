@@ -1,58 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="4dp"
-
+    android:id="@+id/edit_plan_cardview"
     app:cardBackgroundColor="#5198DA"
     app:cardCornerRadius="30dp"
     app:cardElevation="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
-        android:id="@+id/edit_plan_cardview"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:paddingStart="50dp"
-        android:paddingEnd="50dp">
+        >
 
-        <Spinner
-            android:id="@+id/MainSubSpinner"
+        <TextView
+            android:id="@+id/MainSubText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:fontFamily="@font/kopubdotumbold"
+            android:text="메인메뉴"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="30dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
-        <Spinner
-            android:id="@+id/CategorieSpinner"
+        <TextView
+            android:id="@+id/CategorieText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:fontFamily="@font/kopubdotumbold"
+            android:text="카테고리"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:layout_marginStart="40dp"
+            android:layout_marginBottom="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
-        <Spinner
-            android:id="@+id/MenuSpinner"
+        <TextView
+            android:id="@+id/MenuText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:fontFamily="@font/kopubdotumbold"
+            android:text="메뉴"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginEnd="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="X"
-            android:textSize="25sp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/kopubdotumbold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+        />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

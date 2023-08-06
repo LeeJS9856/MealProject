@@ -10,7 +10,6 @@ public class Planner {
 
     public Planner(String week, String time, String mainsub, String categorie, String menu)
     {
-        //this._id = _id; 위에 int _id 추가할것
         this.week = week;
         this.categorie = categorie;
         this.mainsub = mainsub;
@@ -19,7 +18,7 @@ public class Planner {
     }
     public Planner()
     {
-        this("", "", "", "", "");
+        this("일요일", "조식", "메인메뉴", "카테고리", "메뉴");
     }
 
     public String getWeek() {

@@ -1,5 +1,6 @@
 package org.techtown.mealproject;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,71 +8,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditPlanFragment extends Fragment {
 
     Context context;
-    TabLayout.OnTabSelectedListener listener;
-
     RecyclerView editPlanRecyView;
-    RecyclerViewAdapter recyclerViewAdapter;
+    ItemAdapter itemAdapter;
+    ItemTouchHelper helper;
     private final String TAG = this.getClass().getSimpleName();
     private List<String> weeklist = new ArrayList<>(List.of("일요일", "월요일", "화요일", "수요일", "목요일", "금요일"));
-
     private List<String> timelist = new ArrayList<>(List.of("조식", "중식", "석식"));
-    private List<String> mainSub = new ArrayList<>(List.of("메인 메뉴", "서브 메뉴"));
-
-    private List<String> mainCategorie = new ArrayList<>(List.of( "한식", "빵","면", "밥", "분식", "기타"));
-    private List<String> subCategorie = new ArrayList<>(List.of("국", "반찬", "기타"));
-
-    private List<String> koreanMenu = new ArrayList<>(List.of());
-    private List<String> breadMenu = new ArrayList<>(List.of());
-    private List<String> noodleMenu = new ArrayList<>(List.of());
-    private List<String> riceMenu = new ArrayList<>(List.of());
-    private List<String> flourMenu = new ArrayList<>(List.of());
-    private List<String> etcMenu = new ArrayList<>(List.of());
-
-    private List<String> soupMenu = new ArrayList<>(List.of());
-    private List<String> sideMenu = new ArrayList<>(List.of());
-    private Spinner weekSpinner;
-
-    private Spinner timeSpinner;
-    private SpinnerAdapter weekAdapter;
-    private SpinnerAdapter timeAdapter;
-
-    private Spinner mainSubSpinner;
-    private Spinner categorieSpinner;
-    private Spinner menuSpinner;
-
-    private SpinnerAdapter mainSubAdapter;
-    private SpinnerAdapter categorieAdapter;
-    private SpinnerAdapter manuAdapter;
+    private Spinner weekSpinner, timeSpinner;
+    private SpinnerAdapter weekAdapter, timeAdapter;
 
     private String choicedItem = "";
+    private int CardViewCount = 0;
 
 
-    private Planner[][] planner = new Planner[6][3];
 //여기 더 추가할것
 
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
         this.context = context;
-
     }
 
     @Override
@@ -81,7 +53,6 @@ public class EditPlanFragment extends Fragment {
         if(context != null)
         {
             context = null;
-            listener = null;
         }
     }
 
@@ -95,60 +66,40 @@ public class EditPlanFragment extends Fragment {
     public void initUI(ViewGroup rootView){
         weekSpinner = rootView.findViewById(R.id.WeekSpinner);
         timeSpinner = rootView.findViewById(R.id.TimeSpinner);
-        weekAdapter = new SpinnerAdapter(context, weeklist);
-        timeAdapter = new SpinnerAdapter(context, timelist);
-
 
         initSpinner(weekAdapter, weekSpinner, weeklist);
         initSpinner(timeAdapter, timeSpinner, timelist);
 
-        String text = weekSpinner.getSelectedItem().toString();
-        Log.d(TAG, "initUI입니다 " + text);
-
-
+        initRecyView(rootView);
         //
 
-        editPlanRecyView = rootView.findViewById(R.id.editPlanRecyView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        editPlanRecyView.setLayoutManager(layoutManager);
-
-        recyclerViewAdapter = new RecyclerViewAdapter();
-        recyclerViewAdapter.addItem(new Planner("일요일", "조식", "메인 메뉴", "밥류", "제육볶음"));
-        recyclerViewAdapter.addItem(new Planner("일요일", "조식", "메인 메뉴", "밥류", "제육볶음"));
-        recyclerViewAdapter.addItem(new Planner("일요일", "조식", "메인 메뉴", "밥류", "제육볶음"));
-        recyclerViewAdapter.addItem(new Planner("일요일", "조식", "메인 메뉴", "밥류", "제육볶음"));
-        recyclerViewAdapter.addItem(new Planner("일요일", "조식", "메인 메뉴", "밥류", "제육볶음"));
-        editPlanRecyView.setAdapter(recyclerViewAdapter);
-
-
+        Button addCardButton = rootView.findViewById(R.id.addCardviewBotton);
+        List<Planner> plannerList = new ArrayList<>();
+        addCardButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                plannerList.add(new Planner());
+                itemAdapter.addItem(plannerList.get(CardViewCount));
+                Log.d(TAG, "Planner= "  + ", CardViewCount = " + CardViewCount);
+                CardViewCount++;
+                editPlanRecyView.setAdapter(itemAdapter);
+            }
+        });
 
 
-/*
-        mainSubSpinner = rootView.findViewById(R.id.MainSubSpinner);
-        categorieSpinner = rootView.findViewById(R.id.CategorieSpinner);
-        menuSpinner = rootView.findViewById(R.id.MenuSpinner);
 
 
-        mainSubAdapter = new SpinnerAdapter(context, mainSub);
-        initSpinner(mainSubAdapter, mainSubSpinner, mainSub);
 
-        if(choicedMainSub.equals("메인 메뉴")) {
-            initSpinner(rootView, categorieAdapter, categorieSpinner, mainCategorie);
-            choicedCategorie = categorieAdapter.getItem();
-        }
-        else if (choicedMainSub.equals("서브 메뉴")) {
-            initSpinner(rootView, categorieAdapter, categorieSpinner, subCategorie);
-        }*/
 
 
     }
 
     public void initSpinner(SpinnerAdapter adapter,Spinner spinner, List<String> list) {
+        adapter = new SpinnerAdapter(context, list);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                 String choicedItem = parent.getItemAtPosition(position).toString();
+                String choicedItem = parent.getItemAtPosition(position).toString();
                 Log.d(TAG, "선택아이템 " + choicedItem);
             }
 
@@ -159,5 +110,14 @@ public class EditPlanFragment extends Fragment {
         });
     }
 
-    //public String choicedSpinner(ViewGroup rootView, SpinnerAdapter adapter, Spinner spinner, Lis)
+    public void initRecyView(ViewGroup rootView) {
+        editPlanRecyView = rootView.findViewById(R.id.editPlanRecyView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        itemAdapter = new ItemAdapter(context);
+        editPlanRecyView.setLayoutManager(layoutManager);
+        editPlanRecyView.setAdapter(itemAdapter);
+
+        helper = new ItemTouchHelper(new ItemTouchHelperCallback(itemAdapter));
+        helper.attachToRecyclerView(editPlanRecyView);
+    }
 }

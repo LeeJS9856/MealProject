@@ -57,8 +57,4 @@ public class SpinnerAdapter extends BaseAdapter {
 
         return view;
     }
-
-    public String getItem() {
-        return text;
-    }
 }
