@@ -16,7 +16,8 @@ import com.google.android.material.tabs.TabLayout;
 public class MainActivity extends AppCompatActivity {
     private final FragmentManager fragmentManager = getSupportFragmentManager();
     private final PlannerFragment plannerFragment = new PlannerFragment();
-    private final EditPlanFragment addPlanFragment = new EditPlanFragment();
+    private final EditPlanFragment editPlanFragment = new EditPlanFragment();
+    private final AddMenuFragment addMenuFragment = new AddMenuFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +38,14 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.plannerTab:
                     transaction.replace(R.id.container, plannerFragment).commitAllowingStateLoss();
-                    Log.d("tab", "1번 탭 실행 됨".toString());
                     break;
 
                 case R.id.planEditTab:
-                    transaction.replace(R.id.container,addPlanFragment ).commitAllowingStateLoss();
-                    Log.d("tab", "2번 탭 실행 됨".toString());
+                    transaction.replace(R.id.container,editPlanFragment ).commitAllowingStateLoss();
                     break;
 
                 case R.id.addMenuTab:
-
+                    transaction.replace(R.id.container,addMenuFragment).commitAllowingStateLoss();
                     break;
             }
 
