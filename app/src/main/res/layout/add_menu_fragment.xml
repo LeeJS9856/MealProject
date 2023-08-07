@@ -27,7 +27,7 @@
         android:orientation="horizontal">
 
         <View
-            android:id="@+id/mainMneuView"
+            android:id="@+id/mainMenuView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

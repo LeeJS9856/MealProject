@@ -63,6 +63,8 @@ public class AddMenuFragment extends Fragment {
     private void initUI(ViewGroup rootView) {
         initRecyView(rootView);
         initAddMenu(rootView);
+        setMainSubButton(rootView);
+
 
 
     }
@@ -126,6 +128,32 @@ public class AddMenuFragment extends Fragment {
                     handled = true;
                 }
                 return handled;
+            }
+        });
+    }
+
+    public void setMainSubButton(ViewGroup rootView) {
+        Button mainMenuButton = rootView.findViewById(R.id.main_menu_button);
+        Button subMenuButton = rootView.findViewById(R.id.sub_menu_button);
+        View mainMenuView = rootView.findViewById(R.id.mainMenuView);
+        View subMenuView = rootView.findViewById(R.id.subMenuView);
+
+        mainMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainMenuButton.setTextColor(getResources().getColor(R.color.white));
+                mainMenuView.setVisibility(View.VISIBLE);
+                subMenuButton.setTextColor(getResources().getColor(R.color.customSky));
+                subMenuView.setVisibility(View.INVISIBLE);
+            }
+        });
+        subMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainMenuButton.setTextColor(getResources().getColor(R.color.customSky));
+                mainMenuView.setVisibility(View.INVISIBLE);
+                subMenuButton.setTextColor(getResources().getColor(R.color.white));
+                subMenuView.setVisibility(View.VISIBLE);
             }
         });
     }
