@@ -25,7 +25,7 @@
             android:fontFamily="@font/kopubdotumbold"
             android:gravity="center_vertical"
             android:text="메뉴"
-            android:textSize="30sp"
+            android:textSize="20sp"
 
             />
 

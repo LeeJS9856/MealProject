@@ -2,11 +2,16 @@ package org.techtown.mealproject;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,8 +27,6 @@ public class AddMenuFragment extends Fragment {
     TabLayout.OnTabSelectedListener listener;
     RecyclerView addMenuRecyclerView;
     MenuItemAdapter menuItemAdapter;
-    ItemTouchHelper helper;
-    public int count = 0;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -63,17 +66,40 @@ public class AddMenuFragment extends Fragment {
         initRecyView(rootView);
 
         Button addMenuButton = rootView.findViewById(R.id.add_menu_button);
+        EditText editText = rootView.findViewById(R.id.editText);
         addMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String sampleItem = "메뉴"+count;
-                menuItemAdapter.addItem(sampleItem);
-                count++;
+                menuItemAdapter.addItem(editText.getText().toString());
                 addMenuRecyclerView.setAdapter(menuItemAdapter);
+                editText.setText(null);
+                hideKeyboard();
             }
         });
 
+        editText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                switch (keyCode) {
+                    case KeyEvent.KEYCODE_ENTER:
+                        addMenuButton.callOnClick();
+                        break;
+                }
+                return true;
+            }
+        });
+
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if(actionId == EditorInfo.IME_ACTION_DONE) {
+                    addMenuButton.callOnClick();
+                    handled = true;
+                }
+                return handled;
+            }
+        });
 
     }
 
@@ -84,5 +110,12 @@ public class AddMenuFragment extends Fragment {
         addMenuRecyclerView.setLayoutManager(layoutManager);
         addMenuRecyclerView.setAdapter(menuItemAdapter);
     }
+
+    void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
 }
+
+
 
