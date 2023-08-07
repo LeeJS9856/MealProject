@@ -1,6 +1,7 @@
 package org.techtown.mealproject;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,7 +66,7 @@ public class AddMenuFragment extends Fragment {
         initRecyView(rootView);
         initAddMenu(rootView);
         setMainSubButton(rootView);
-
+        setCategorieButton(rootView);
 
 
     }
@@ -138,6 +140,11 @@ public class AddMenuFragment extends Fragment {
         View mainMenuView = rootView.findViewById(R.id.mainMenuView);
         View subMenuView = rootView.findViewById(R.id.subMenuView);
 
+        LinearLayout mainLayout1 = rootView.findViewById(R.id.mainLayout1);
+        LinearLayout mainLayout2 = rootView.findViewById(R.id.mainLayout2);
+        LinearLayout subLayout1 = rootView.findViewById(R.id.subLayout1);
+        LinearLayout subLayout2 = rootView.findViewById(R.id.subLayout2);
+
         mainMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,6 +152,10 @@ public class AddMenuFragment extends Fragment {
                 mainMenuView.setVisibility(View.VISIBLE);
                 subMenuButton.setTextColor(getResources().getColor(R.color.customSky));
                 subMenuView.setVisibility(View.INVISIBLE);
+                mainLayout1.setVisibility(View.VISIBLE);
+                mainLayout2.setVisibility(View.VISIBLE);
+                subLayout1.setVisibility(View.INVISIBLE);
+                subLayout2.setVisibility(View.INVISIBLE);
             }
         });
         subMenuButton.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +165,66 @@ public class AddMenuFragment extends Fragment {
                 mainMenuView.setVisibility(View.INVISIBLE);
                 subMenuButton.setTextColor(getResources().getColor(R.color.white));
                 subMenuView.setVisibility(View.VISIBLE);
+                mainLayout1.setVisibility(View.INVISIBLE);
+                mainLayout2.setVisibility(View.INVISIBLE);
+                subLayout1.setVisibility(View.VISIBLE);
+                subLayout2.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void setCategorieButton(ViewGroup rootView) {
+        Button main_banchan = rootView.findViewById(R.id.Main_banchan);
+        Button main_bread = rootView.findViewById(R.id.Main_bread);
+        Button main_noodle = rootView.findViewById(R.id.Main_noodle);
+        Button main_bunsic = rootView.findViewById(R.id.Main_bunsic);
+        Button main_bap = rootView.findViewById(R.id.Main_bap);
+
+        Button sub_side = rootView.findViewById(R.id.Sub_side);
+        Button sub_soup = rootView.findViewById(R.id.Sub_soup);
+        Button sub_busic = rootView.findViewById(R.id.Sub_busic);
+
+        setButton(main_banchan, main_bread, main_noodle, main_bunsic, main_bap);
+        setButton(main_bread, main_noodle, main_bunsic, main_bap, main_banchan);
+        setButton(main_bunsic, main_bap, main_banchan,main_bread, main_noodle);
+        setButton(main_bap, main_banchan,main_bread, main_noodle, main_bunsic);
+        setButton(main_noodle, main_bunsic, main_bap, main_banchan,main_bread);
+
+        setButton(sub_side, sub_soup, sub_busic);
+        setButton(sub_soup, sub_busic,sub_side);
+        setButton(sub_busic, sub_side, sub_soup);
+    }
+
+    public void choicedButton(Button button) {
+        button.setTextColor(getResources().getColor(R.color.customBlue));
+        button.setBackground(getResources().getDrawable(R.drawable.img_filled_bg));
+    }
+
+    public void unchoicedButton(Button button) {
+        button.setTextColor(getResources().getColor(R.color.white));
+        button.setBackgroundColor(getResources().getColor(R.color.transparent));
+    }
+
+    public void setButton(Button choicedButton, Button button1, Button button2, Button button3, Button button4) {
+        choicedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unchoicedButton(button1);
+                unchoicedButton(button2);
+                unchoicedButton(button3);
+                unchoicedButton(button4);
+                choicedButton(choicedButton);
+            }
+        });
+    }
+
+    public void setButton(Button choicedButton, Button button1, Button button2) {
+        choicedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unchoicedButton(button1);
+                unchoicedButton(button2);
+                choicedButton(choicedButton);
             }
         });
     }

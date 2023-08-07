@@ -71,19 +71,9 @@ public class EditPlanFragment extends Fragment {
         initSpinner(timeAdapter, timeSpinner, timelist);
 
         initRecyView(rootView);
-        //
+        addCardView(rootView);
 
-        Button addCardButton = rootView.findViewById(R.id.addCardviewBotton);
-        List<Planner> plannerList = new ArrayList<>();
-        addCardButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                plannerList.add(new Planner("일요일", "조식", "메인메뉴", "카테고리", "메뉴"+CardViewCount));
-                itemAdapter.addItem(plannerList.get(CardViewCount));
-                Log.d(TAG, "Planner= "  + ", CardViewCount = " + CardViewCount);
-                CardViewCount++;
-                editPlanRecyView.setAdapter(itemAdapter);
-            }
-        });
+
     }
 
     public void initSpinner(SpinnerAdapter adapter,Spinner spinner, List<String> list) {
@@ -112,5 +102,19 @@ public class EditPlanFragment extends Fragment {
 
         helper = new ItemTouchHelper(new ItemTouchHelperCallback(itemAdapter));
         helper.attachToRecyclerView(editPlanRecyView);
+    }
+
+    public void addCardView(ViewGroup rootView) {
+        Button addCardButton = rootView.findViewById(R.id.addCardviewBotton);
+        List<Planner> plannerList = new ArrayList<>();
+        addCardButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                plannerList.add(new Planner("일요일", "조식", "메인메뉴", "카테고리", "메뉴"+CardViewCount));
+                itemAdapter.addItem(plannerList.get(CardViewCount));
+                Log.d(TAG, "Planner= "  + ", CardViewCount = " + CardViewCount);
+                CardViewCount++;
+                editPlanRecyView.setAdapter(itemAdapter);
+            }
+        });
     }
 }
