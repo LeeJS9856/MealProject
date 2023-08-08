@@ -2,6 +2,8 @@ package org.techtown.mealproject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +31,11 @@ public class EditPlanFragment extends Fragment {
     RecyclerView editPlanRecyView;
     ItemAdapter itemAdapter;
     ItemTouchHelper helper;
+
+
+    DatabaseHleper dbHelper;
+    SQLiteDatabase database;
+    String tableName;
     private final String TAG = this.getClass().getSimpleName();
     private List<String> weeklist = new ArrayList<>(List.of("일요일", "월요일", "화요일", "수요일", "목요일", "금요일"));
     private List<String> timelist = new ArrayList<>(List.of("조식", "중식", "석식"));
@@ -73,7 +80,7 @@ public class EditPlanFragment extends Fragment {
         initRecyView(rootView);
         addCardView(rootView);
 
-
+        executeQuery();
     }
 
     public void initSpinner(SpinnerAdapter adapter,Spinner spinner, List<String> list) {
@@ -109,12 +116,46 @@ public class EditPlanFragment extends Fragment {
         List<Planner> plannerList = new ArrayList<>();
         addCardButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                plannerList.add(new Planner("일요일", "조식", "메인메뉴", "카테고리", "메뉴"+CardViewCount));
+                plannerList.add(new Planner(0,"일요일", "조식", "메인메뉴", "카테고리", "메뉴"+CardViewCount));
                 itemAdapter.addItem(plannerList.get(CardViewCount));
                 Log.d(TAG, "Planner= "  + ", CardViewCount = " + CardViewCount);
                 CardViewCount++;
                 editPlanRecyView.setAdapter(itemAdapter);
             }
         });
+    }
+
+    private void createDatabase(String name) {
+        println("createDatabase 호출됨.");
+
+        dbHelper = new DatabaseHleper(context);
+        database = dbHelper.getWritableDatabase();
+
+        println("데이터베이스 생성함: " + name);
+    }
+
+    public void println(String data) {
+        Log.d("myTagr", data);
+    }
+
+    public void executeQuery() {
+        println("executeQuery 호출됨.");
+
+        Cursor cursor = database.rawQuery("select _id, week, time, mainSub, categorie, menu", null);
+        int recordCount = cursor.getCount();
+        println("레코드 개수: "+recordCount);
+
+        for (int i=0;i<recordCount;i++) {
+            cursor.moveToNext();
+            int id = cursor.getInt(0);
+            String week = cursor.getString(1);
+            String time = cursor.getString(2);
+            String mainSub = cursor.getString(3);
+            String categorie = cursor.getString(4);
+            String menu = cursor.getString(5);
+
+            println("레코드#"+i+" : "+ id + ", "+week+", "+time+", "+mainSub+", "+categorie+", "+menu);
+        }
+        cursor.close();
     }
 }
