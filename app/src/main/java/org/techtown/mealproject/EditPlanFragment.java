@@ -25,7 +25,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditPlanFragment extends Fragment {
+public class EditPlanFragment extends Fragment{
 
     Context context;
     RecyclerView editPlanRecyView;
@@ -34,8 +34,9 @@ public class EditPlanFragment extends Fragment {
 
 
     DatabaseHleper dbHelper;
-    SQLiteDatabase database;
-    String tableName;
+
+    String tableName = "planner";
+    DatabaseManager dbManager;
     private final String TAG = this.getClass().getSimpleName();
     private List<String> weeklist = new ArrayList<>(List.of("일요일", "월요일", "화요일", "수요일", "목요일", "금요일"));
     private List<String> timelist = new ArrayList<>(List.of("조식", "중식", "석식"));
@@ -47,6 +48,9 @@ public class EditPlanFragment extends Fragment {
 
 
 //여기 더 추가할것
+    public static EditPlanFragment newInstance() {
+        return new EditPlanFragment();
+    }
 
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -80,7 +84,9 @@ public class EditPlanFragment extends Fragment {
         initRecyView(rootView);
         addCardView(rootView);
 
-        executeQuery();
+        initDataBase();
+        initBackButton(rootView);
+
     }
 
     public void initSpinner(SpinnerAdapter adapter,Spinner spinner, List<String> list) {
@@ -91,6 +97,7 @@ public class EditPlanFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String choicedItem = parent.getItemAtPosition(position).toString();
                 Log.d(TAG, "선택아이템 " + choicedItem);
+
             }
 
             @Override
@@ -121,41 +128,37 @@ public class EditPlanFragment extends Fragment {
                 Log.d(TAG, "Planner= "  + ", CardViewCount = " + CardViewCount);
                 CardViewCount++;
                 editPlanRecyView.setAdapter(itemAdapter);
+                dbManager.insetRecord(dbManager.database, tableName);
+                dbManager.executeQuery(dbManager.database);
             }
         });
     }
 
-    private void createDatabase(String name) {
-        println("createDatabase 호출됨.");
-
-        dbHelper = new DatabaseHleper(context);
-        database = dbHelper.getWritableDatabase();
-
-        println("데이터베이스 생성함: " + name);
-    }
 
     public void println(String data) {
         Log.d("myTagr", data);
     }
 
-    public void executeQuery() {
-        println("executeQuery 호출됨.");
 
-        Cursor cursor = database.rawQuery("select _id, week, time, mainSub, categorie, menu", null);
-        int recordCount = cursor.getCount();
-        println("레코드 개수: "+recordCount);
+    public void initDataBase() {
+        String databaseName = "planner";
+        dbManager = new DatabaseManager();
+        dbManager.createDatabase(databaseName, context);
+        dbManager.createTable(tableName);
 
-        for (int i=0;i<recordCount;i++) {
-            cursor.moveToNext();
-            int id = cursor.getInt(0);
-            String week = cursor.getString(1);
-            String time = cursor.getString(2);
-            String mainSub = cursor.getString(3);
-            String categorie = cursor.getString(4);
-            String menu = cursor.getString(5);
 
-            println("레코드#"+i+" : "+ id + ", "+week+", "+time+", "+mainSub+", "+categorie+", "+menu);
-        }
-        cursor.close();
+        dbHelper = new DatabaseHleper(context);
+        dbManager.database = dbHelper.getWritableDatabase();
+        dbManager.executeQuery(dbManager.database);
+    }
+
+    public void initBackButton(ViewGroup rootView) {
+        Button backbutton = rootView.findViewById(R.id.backButton);
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).replaceFragment(PlannerFragment.newInstance());
+            }
+        });
     }
 }

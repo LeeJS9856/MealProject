@@ -26,6 +26,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     ArrayList<Planner> item = new ArrayList<>();
     Context context;
 
+    DatabaseHleper dbHelper;
+
+    String tableName = "planner";
     public ItemAdapter(Context context) {
         this.context = context;
     }

@@ -1,8 +1,10 @@
 package org.techtown.mealproject;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +32,11 @@ public class AddMenuFragment extends Fragment {
     TabLayout.OnTabSelectedListener listener;
     RecyclerView addMenuRecyclerView;
     MenuItemAdapter menuItemAdapter;
+
+    DatabaseHleper dbHelper;
+    SQLiteDatabase database;
+    DatabaseManager dbManager;
+    String tableName = "planner";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -68,7 +75,15 @@ public class AddMenuFragment extends Fragment {
         setMainSubButton(rootView);
         setCategorieButton(rootView);
 
+        String databaseName = "planner";
+        dbManager = new DatabaseManager();
+        dbManager.createDatabase(databaseName, context);
+        dbManager.createTable(tableName);
 
+
+        dbHelper = new DatabaseHleper(context);
+        database = dbHelper.getWritableDatabase();
+        dbManager.executeQuery(database);
     }
 
     public void initRecyView(ViewGroup rootView) {

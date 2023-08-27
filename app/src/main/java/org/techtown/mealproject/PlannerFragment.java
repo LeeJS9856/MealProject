@@ -31,6 +31,12 @@ public class PlannerFragment extends Fragment {
     DailyPlannerFragment dailyPlannerFragment;
     WeeklyPlannerFragment weeklyPlannerFragment;
 
+
+
+    public static PlannerFragment newInstance() {
+        return new PlannerFragment();
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

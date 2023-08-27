@@ -2,6 +2,7 @@ package org.techtown.mealproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -14,7 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
-    private final FragmentManager fragmentManager = getSupportFragmentManager();
     private final PlannerFragment plannerFragment = new PlannerFragment();
     private final EditPlanFragment editPlanFragment = new EditPlanFragment();
     private final AddMenuFragment addMenuFragment = new AddMenuFragment();
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, plannerFragment).commitAllowingStateLoss();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -34,22 +34,27 @@ public class MainActivity extends AppCompatActivity {
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
             switch (item.getItemId()) {
                 case R.id.plannerTab:
-                    transaction.replace(R.id.container, plannerFragment).commitAllowingStateLoss();
+                    replaceFragment(plannerFragment);
                     break;
 
                 case R.id.planEditTab:
-                    transaction.replace(R.id.container,editPlanFragment ).commitAllowingStateLoss();
+                    replaceFragment(editPlanFragment);
                     break;
 
                 case R.id.addMenuTab:
-                    transaction.replace(R.id.container,addMenuFragment).commitAllowingStateLoss();
+                    replaceFragment(addMenuFragment);
                     break;
             }
 
             return true;
         }
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment).commit();
     }
 }
