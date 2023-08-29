@@ -3,6 +3,7 @@ package org.techtown.mealproject;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.GnssAntennaInfo;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,11 @@ import java.util.List;
 
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> implements ItemTouchHelperListener {
+
     ArrayList<Planner> item = new ArrayList<>();
     Context context;
+    private static final String TAG = "ItemAdapter";
 
-    DatabaseHleper dbHelper;
-
-    String tableName = "planner";
     public ItemAdapter(Context context) {
         this.context = context;
     }
@@ -57,8 +57,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public void onItemClick(int position) {
-
     }
+
+
+
+    public void setItems(ArrayList<Planner> items) {
+        this.item = items;
+    }
+
 
     @Override
     public boolean onItemMove(int from_position, int to_position) {
@@ -73,7 +79,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public void onItemSwipe(int position) {
         item.remove(position);
         notifyItemRemoved(position);
+        deletePlan(position);
+
+
+        for(int i=position;i<item.size();i++) {
+            modifyID(i , i+1);
+        }
     }
+
+
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         CardView itemCard;
@@ -93,6 +107,48 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             categorieText.setText(planner.getCategorie());
             menuText.setText(planner.getMenu());
         }
+
+        public void setItem(Planner item) {
+            String mainSub = item.getMainsub();
+            mainsubText.setText(item.getMainsub());
+
+            String categorie = item.getCategorie();
+            categorieText.setText(item.getCategorie());
+
+            String menu = item.getMenu();
+            menuText.setText(item.getMenu());
+        }
+
+
+
+
+    }
+
+    private void deletePlan(int id) {
+        println("deletePlan called.");
+        String sql = "delete from " + PlannerDatabase.TABLE_PLANNER +
+                " where " +
+                " _id = " + id;
+
+        Log.d(TAG, "sql : " + sql);
+        PlannerDatabase database = PlannerDatabase.getInstance(context);
+        database.exeSQL(sql);
+    }
+
+    private void modifyID(int newNum, int oldNum) {
+        String sql = "update " + PlannerDatabase.TABLE_PLANNER +
+                " set " +
+                " _id = " + newNum +
+                " where " +
+                " _id = " + oldNum;
+
+        Log.d(TAG, "sql : " + sql);
+        PlannerDatabase database = PlannerDatabase.getInstance(context);
+        database.exeSQL(sql);
+    }
+
+    public void println(String data) {
+        Log.d(TAG, data);
     }
 
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,21 +32,11 @@ public class EditPlanFragment extends Fragment{
     RecyclerView editPlanRecyView;
     ItemAdapter itemAdapter;
     ItemTouchHelper helper;
-
-
-    DatabaseHleper dbHelper;
-
-    String tableName = "planner";
-    DatabaseManager dbManager;
     private final String TAG = this.getClass().getSimpleName();
     private List<String> weeklist = new ArrayList<>(List.of("일요일", "월요일", "화요일", "수요일", "목요일", "금요일"));
     private List<String> timelist = new ArrayList<>(List.of("조식", "중식", "석식"));
     private Spinner weekSpinner, timeSpinner;
     private SpinnerAdapter weekAdapter, timeAdapter;
-
-    private String choicedItem = "";
-    private int CardViewCount = 0;
-
 
 //여기 더 추가할것
     public static EditPlanFragment newInstance() {
@@ -71,6 +62,7 @@ public class EditPlanFragment extends Fragment{
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.edit_plan_fragment, container, false);
 
         initUI(rootView);
+        loadPlannerListData();
         return rootView;
     }
 
@@ -83,10 +75,7 @@ public class EditPlanFragment extends Fragment{
 
         initRecyView(rootView);
         addCardView(rootView);
-
-        initDataBase();
         initBackButton(rootView);
-
     }
 
     public void initSpinner(SpinnerAdapter adapter,Spinner spinner, List<String> list) {
@@ -121,36 +110,25 @@ public class EditPlanFragment extends Fragment{
     public void addCardView(ViewGroup rootView) {
         Button addCardButton = rootView.findViewById(R.id.addCardviewBotton);
         List<Planner> plannerList = new ArrayList<>();
+
         addCardButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                plannerList.add(new Planner(0,"일요일", "조식", "메인메뉴", "카테고리", "메뉴"+CardViewCount));
-                itemAdapter.addItem(plannerList.get(CardViewCount));
-                Log.d(TAG, "Planner= "  + ", CardViewCount = " + CardViewCount);
-                CardViewCount++;
+                int listCount = 0;
+                plannerList.add(new Planner(0,"", "", "메인메뉴", "카테고리", "메뉴"));
+                itemAdapter.addItem(plannerList.get(listCount));
+                Log.d(TAG, "Planner = " + recordCount());
                 editPlanRecyView.setAdapter(itemAdapter);
-                dbManager.insetRecord(dbManager.database, tableName);
-                dbManager.executeQuery(dbManager.database);
+                addPlan(plannerList.get(listCount), recordCount(), context);
+                listCount++;
             }
         });
     }
 
 
     public void println(String data) {
-        Log.d("myTagr", data);
+        Log.d(TAG, data);
     }
 
-
-    public void initDataBase() {
-        String databaseName = "planner";
-        dbManager = new DatabaseManager();
-        dbManager.createDatabase(databaseName, context);
-        dbManager.createTable(tableName);
-
-
-        dbHelper = new DatabaseHleper(context);
-        dbManager.database = dbHelper.getWritableDatabase();
-        dbManager.executeQuery(dbManager.database);
-    }
 
     public void initBackButton(ViewGroup rootView) {
         Button backbutton = rootView.findViewById(R.id.backButton);
@@ -160,5 +138,77 @@ public class EditPlanFragment extends Fragment{
                 ((MainActivity)getActivity()).replaceFragment(PlannerFragment.newInstance());
             }
         });
+    }
+
+    private void addPlan(Planner item, int id, Context context) {
+
+        String mainSub = item.getMainsub();
+        String categorie = item.getCategorie();
+        String menu = item.getMenu();
+
+        String sql = "insert into " + PlannerDatabase.TABLE_PLANNER +
+                " (_id, week, time, mainSub, categorie, menu) values (" +
+                "'"+ id + "', " +
+                "'"+ "" + "', " +
+                "'"+ "" + "', " +
+                "'"+ mainSub + "', " +
+                "'"+ categorie + "', " +
+                "'"+ menu + id + "')";
+        Log.d(TAG, "sql : "+ sql);
+        PlannerDatabase database = PlannerDatabase.getInstance(context);
+        database.exeSQL(sql);
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    public int loadPlannerListData() {
+        println("loadPlanListData called.");
+        String sql = "select _id, week, time, mainSub, categorie, menu from " + PlannerDatabase.TABLE_PLANNER;
+
+        int recordCount = -1;
+
+        PlannerDatabase database = PlannerDatabase.getInstance(context);
+        database.open();
+        if(database != null) {
+            Cursor outCursor = database.rawQuery(sql);
+            recordCount = outCursor.getCount();
+            println("record count : " + recordCount + "\n");
+
+            ArrayList<Planner> items = new ArrayList<Planner>();
+            for(int i = 0;i<recordCount;i++) {
+                outCursor.moveToNext();
+
+                int _id = outCursor.getInt(0);
+                String week = outCursor.getString(1);
+                String time = outCursor.getString(2);
+                String mainSub = outCursor.getString(3);
+                String categorie = outCursor.getString(4);
+                String menu = outCursor.getString(5);
+
+                println("#" + i + " -> " + _id + ", " + mainSub + ", " + categorie + ", " + menu);
+                items.add(new Planner(_id, week, time, mainSub, categorie, menu));
+            }
+
+            outCursor.close();
+
+            itemAdapter.setItems(items);
+            itemAdapter.notifyDataSetChanged();
+        }
+        return recordCount;
+    }
+
+    public int recordCount() {
+        String sql = "select _id, week, time, mainSub, categorie, menu from " + PlannerDatabase.TABLE_PLANNER;
+
+        int recordCount = -1;
+
+        PlannerDatabase database = PlannerDatabase.getInstance(context);
+        if(database != null) {
+            Cursor outCursor = database.rawQuery(sql);
+            recordCount = outCursor.getCount();
+            println("record count : " + recordCount + "\n");
+            outCursor.close();
+        }
+        return recordCount;
     }
 }

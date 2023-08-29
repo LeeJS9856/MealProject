@@ -33,10 +33,6 @@ public class AddMenuFragment extends Fragment {
     RecyclerView addMenuRecyclerView;
     MenuItemAdapter menuItemAdapter;
 
-    DatabaseHleper dbHelper;
-    SQLiteDatabase database;
-    DatabaseManager dbManager;
-    String tableName = "planner";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -74,16 +70,6 @@ public class AddMenuFragment extends Fragment {
         initAddMenu(rootView);
         setMainSubButton(rootView);
         setCategorieButton(rootView);
-
-        String databaseName = "planner";
-        dbManager = new DatabaseManager();
-        dbManager.createDatabase(databaseName, context);
-        dbManager.createTable(tableName);
-
-
-        dbHelper = new DatabaseHleper(context);
-        database = dbHelper.getWritableDatabase();
-        dbManager.executeQuery(database);
     }
 
     public void initRecyView(ViewGroup rootView) {
