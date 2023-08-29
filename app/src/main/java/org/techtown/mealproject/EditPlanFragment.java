@@ -38,6 +38,10 @@ public class EditPlanFragment extends Fragment{
     private Spinner weekSpinner, timeSpinner;
     private SpinnerAdapter weekAdapter, timeAdapter;
 
+    private String choicedItem = "";
+    private String choicedWeek = "";
+    private String choicedTime = "";
+
 //여기 더 추가할것
     public static EditPlanFragment newInstance() {
         return new EditPlanFragment();
@@ -76,6 +80,7 @@ public class EditPlanFragment extends Fragment{
         initRecyView(rootView);
         addCardView(rootView);
         initBackButton(rootView);
+        initSavePlanButton(rootView);
     }
 
     public void initSpinner(SpinnerAdapter adapter,Spinner spinner, List<String> list) {
@@ -84,9 +89,8 @@ public class EditPlanFragment extends Fragment{
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String choicedItem = parent.getItemAtPosition(position).toString();
-                Log.d(TAG, "선택아이템 " + choicedItem);
-
+                choicedItem = parent.getItemAtPosition(position).toString();
+                SaveChoicedItem(choicedItem);
             }
 
             @Override
@@ -140,13 +144,25 @@ public class EditPlanFragment extends Fragment{
         });
     }
 
+    public void initSavePlanButton(ViewGroup rootView) {
+        Button backbutton = rootView.findViewById(R.id.savePlanButton);
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).replaceFragment(PlannerFragment.newInstance());
+                modifyWeek(choicedWeek, "");
+                modifyTime(choicedTime, "");
+            }
+        });
+    }
+
     private void addPlan(Planner item, int id, Context context) {
 
         String mainSub = item.getMainsub();
         String categorie = item.getCategorie();
         String menu = item.getMenu();
 
-        String sql = "insert into " + PlannerDatabase.TABLE_PLANNER +
+        String sql = "insert into " + DatabaseName.TABLE_PLANNER +
                 " (_id, week, time, mainSub, categorie, menu) values (" +
                 "'"+ id + "', " +
                 "'"+ "" + "', " +
@@ -163,7 +179,7 @@ public class EditPlanFragment extends Fragment{
     @SuppressLint("NotifyDataSetChanged")
     public int loadPlannerListData() {
         println("loadPlanListData called.");
-        String sql = "select _id, week, time, mainSub, categorie, menu from " + PlannerDatabase.TABLE_PLANNER;
+        String sql = "select _id, week, time, mainSub, categorie, menu from " + DatabaseName.TABLE_PLANNER;
 
         int recordCount = -1;
 
@@ -185,7 +201,7 @@ public class EditPlanFragment extends Fragment{
                 String categorie = outCursor.getString(4);
                 String menu = outCursor.getString(5);
 
-                println("#" + i + " -> " + _id + ", " + mainSub + ", " + categorie + ", " + menu);
+                println("#" + i + " -> " + _id + ", " + week + ", " + time + ", " + mainSub + ", " + categorie + ", " + menu);
                 items.add(new Planner(_id, week, time, mainSub, categorie, menu));
             }
 
@@ -198,7 +214,7 @@ public class EditPlanFragment extends Fragment{
     }
 
     public int recordCount() {
-        String sql = "select _id, week, time, mainSub, categorie, menu from " + PlannerDatabase.TABLE_PLANNER;
+        String sql = "select _id, week, time, mainSub, categorie, menu from " + DatabaseName.TABLE_PLANNER;
 
         int recordCount = -1;
 
@@ -210,5 +226,39 @@ public class EditPlanFragment extends Fragment{
             outCursor.close();
         }
         return recordCount;
+    }
+
+    private void modifyWeek(String newWeek, String oldWeek) {
+        String sql = "update " + DatabaseName.TABLE_PLANNER +
+                " set " +
+                " week = '" + newWeek + "'" +
+                " where " +
+                " week = '" + oldWeek + "'";
+
+        Log.d(TAG, "sql : " + sql);
+        PlannerDatabase database = PlannerDatabase.getInstance(context);
+        database.exeSQL(sql);
+    }
+
+    private void modifyTime(String newTime, String oldTime) {
+        String sql = "update " + DatabaseName.TABLE_PLANNER +
+                " set " +
+                " time = '" + newTime + "'" +
+                " where " +
+                " time = '" + oldTime + "'";
+
+        Log.d(TAG, "sql : " + sql);
+        PlannerDatabase database = PlannerDatabase.getInstance(context);
+        database.exeSQL(sql);
+    }
+
+    public void SaveChoicedItem(String item) {
+        if(weeklist.contains(item)) {
+            choicedWeek = item;
+            println("choicedWeek : " + item);
+        } else if (timelist.contains(item)) {
+            choicedTime = item;
+            println("choicedTime : " + item);
+        }
     }
 }

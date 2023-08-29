@@ -36,7 +36,7 @@
             android:layout_weight="1"/>
 
         <Button
-            android:id="@+id/addPlanButton"
+            android:id="@+id/savePlanButton"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:background="@drawable/img_filled_button"
@@ -44,7 +44,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="10dp"
             android:layout_gravity="center_vertical"
-            android:text="추가"
+            android:text="저장"
             android:textSize="18sp"
             android:textColor="@color/customBlue"
             android:fontFamily="@font/kopubdotumbold"

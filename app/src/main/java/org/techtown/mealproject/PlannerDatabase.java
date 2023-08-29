@@ -9,8 +9,7 @@ import android.util.Log;
 public class PlannerDatabase {
     private static final String TAG = "PlannerDatabase";
     private static PlannerDatabase database;
-    public static String DATABASE_NAME = "planner.db";
-    public static String TABLE_PLANNER = "planner";
+
     public static int DATABASE_VERSION = 1;
 
     private DatabaseHelperSample dbHelper;
@@ -30,7 +29,7 @@ public class PlannerDatabase {
     }
 
     public boolean open() {
-        println("opening database [" + DATABASE_NAME + "].");
+        println("opening database [" + DatabaseName.DATABASE_NAME + "].");
 
         dbHelper = new DatabaseHelperSample(context);
         db = dbHelper.getWritableDatabase();
@@ -39,7 +38,7 @@ public class PlannerDatabase {
     }
 
     public void close() {
-        println("closing database [" + DATABASE_NAME + "].");
+        println("closing database [" + DatabaseName.DATABASE_NAME + "].");
         db.close();
 
         database = null;
@@ -77,22 +76,22 @@ public class PlannerDatabase {
 
     private class DatabaseHelperSample extends SQLiteOpenHelper {
         public DatabaseHelperSample(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+            super(context, DatabaseName.DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         public void onCreate(SQLiteDatabase db) {
-            println("creating database [" + DATABASE_NAME + "].");
+            println("creating database [" + DatabaseName.DATABASE_NAME + "].");
 
-            println("creating table [" + TABLE_PLANNER + "].");
+            println("creating table [" + DatabaseName.TABLE_PLANNER + "].");
 
-            String DROP_SQL = "drop table if exists " + TABLE_PLANNER;
+            String DROP_SQL = "drop table if exists " + DatabaseName.TABLE_PLANNER;
             try{
                 db.execSQL(DROP_SQL);
             }catch (Exception ex) {
                 Log.d(TAG, "Exception in DROP_SQL", ex);
             }
 
-            String CREATE_SQL = "create table " + TABLE_PLANNER + "("
+            String CREATE_SQL = "create table " + DatabaseName.TABLE_PLANNER + "("
                 + " _id INTEGER, "
                     +"week text, "
                     +"time text, "
@@ -108,7 +107,7 @@ public class PlannerDatabase {
         }
 
         public void onOpen(SQLiteDatabase db) {
-            println("opened database [" + DATABASE_NAME + "].");
+            println("opened database [" + DatabaseName.DATABASE_NAME + "].");
         }
 
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

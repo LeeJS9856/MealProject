@@ -108,25 +108,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             menuText.setText(planner.getMenu());
         }
 
-        public void setItem(Planner item) {
-            String mainSub = item.getMainsub();
-            mainsubText.setText(item.getMainsub());
-
-            String categorie = item.getCategorie();
-            categorieText.setText(item.getCategorie());
-
-            String menu = item.getMenu();
-            menuText.setText(item.getMenu());
-        }
-
-
-
-
     }
 
     private void deletePlan(int id) {
         println("deletePlan called.");
-        String sql = "delete from " + PlannerDatabase.TABLE_PLANNER +
+        String sql = "delete from " + DatabaseName.TABLE_PLANNER +
                 " where " +
                 " _id = " + id;
 
@@ -136,7 +122,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }
 
     private void modifyID(int newNum, int oldNum) {
-        String sql = "update " + PlannerDatabase.TABLE_PLANNER +
+        String sql = "update " + DatabaseName.TABLE_PLANNER +
                 " set " +
                 " _id = " + newNum +
                 " where " +
