@@ -39,8 +39,10 @@ public class EditPlanFragment extends Fragment{
     private SpinnerAdapter weekAdapter, timeAdapter;
 
     private String choicedItem = "";
-    private String choicedWeek = "";
-    private String choicedTime = "";
+    private String choicedWeek = "일요일";
+    private String choicedTime = "조식";
+
+    private String choicedTable = DatabaseName.TABLE_PLANNER;
 
 //여기 더 추가할것
     public static EditPlanFragment newInstance() {
@@ -66,7 +68,8 @@ public class EditPlanFragment extends Fragment{
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.edit_plan_fragment, container, false);
 
         initUI(rootView);
-        loadPlannerListData();
+        switchTable(choicedWeek, choicedTime);
+        loadPlannerListData(choicedTable);
         return rootView;
     }
 
@@ -91,6 +94,8 @@ public class EditPlanFragment extends Fragment{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 choicedItem = parent.getItemAtPosition(position).toString();
                 SaveChoicedItem(choicedItem);
+                switchTable(choicedWeek, choicedTime);
+                loadPlannerListData(choicedTable);
             }
 
             @Override
@@ -120,9 +125,11 @@ public class EditPlanFragment extends Fragment{
                 int listCount = 0;
                 plannerList.add(new Planner(0,"", "", "메인메뉴", "카테고리", "메뉴"));
                 itemAdapter.addItem(plannerList.get(listCount));
-                Log.d(TAG, "Planner = " + recordCount());
+                Log.d(TAG, "Planner = " + recordCount(choicedTable));
                 editPlanRecyView.setAdapter(itemAdapter);
-                addPlan(plannerList.get(listCount), recordCount(), context);
+                addPlan(choicedTable,plannerList.get(listCount), recordCount(choicedTable), context);
+                modifyWeek(choicedTable, choicedWeek, "");
+                modifyTime(choicedTable,choicedTime, "");
                 listCount++;
             }
         });
@@ -139,6 +146,7 @@ public class EditPlanFragment extends Fragment{
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dropDownItem(choicedTable);
                 ((MainActivity)getActivity()).replaceFragment(PlannerFragment.newInstance());
             }
         });
@@ -150,19 +158,17 @@ public class EditPlanFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 ((MainActivity)getActivity()).replaceFragment(PlannerFragment.newInstance());
-                modifyWeek(choicedWeek, "");
-                modifyTime(choicedTime, "");
             }
         });
     }
 
-    private void addPlan(Planner item, int id, Context context) {
+    private void addPlan(String table, Planner item, int id, Context context) {
 
         String mainSub = item.getMainsub();
         String categorie = item.getCategorie();
         String menu = item.getMenu();
 
-        String sql = "insert into " + DatabaseName.TABLE_PLANNER +
+        String sql = "insert into " + table +
                 " (_id, week, time, mainSub, categorie, menu) values (" +
                 "'"+ id + "', " +
                 "'"+ "" + "', " +
@@ -177,14 +183,14 @@ public class EditPlanFragment extends Fragment{
 
 
     @SuppressLint("NotifyDataSetChanged")
-    public int loadPlannerListData() {
+    public int loadPlannerListData(String table) {
         println("loadPlanListData called.");
-        String sql = "select _id, week, time, mainSub, categorie, menu from " + DatabaseName.TABLE_PLANNER;
+        String sql = "select _id, week, time, mainSub, categorie, menu from " + table;
 
         int recordCount = -1;
 
         PlannerDatabase database = PlannerDatabase.getInstance(context);
-        database.open();
+
         if(database != null) {
             Cursor outCursor = database.rawQuery(sql);
             recordCount = outCursor.getCount();
@@ -213,8 +219,8 @@ public class EditPlanFragment extends Fragment{
         return recordCount;
     }
 
-    public int recordCount() {
-        String sql = "select _id, week, time, mainSub, categorie, menu from " + DatabaseName.TABLE_PLANNER;
+    public int recordCount(String table) {
+        String sql = "select _id, week, time, mainSub, categorie, menu from " + table;
 
         int recordCount = -1;
 
@@ -228,8 +234,8 @@ public class EditPlanFragment extends Fragment{
         return recordCount;
     }
 
-    private void modifyWeek(String newWeek, String oldWeek) {
-        String sql = "update " + DatabaseName.TABLE_PLANNER +
+    private void modifyWeek(String table, String newWeek, String oldWeek) {
+        String sql = "update " + table +
                 " set " +
                 " week = '" + newWeek + "'" +
                 " where " +
@@ -240,8 +246,8 @@ public class EditPlanFragment extends Fragment{
         database.exeSQL(sql);
     }
 
-    private void modifyTime(String newTime, String oldTime) {
-        String sql = "update " + DatabaseName.TABLE_PLANNER +
+    private void modifyTime(String table, String newTime, String oldTime) {
+        String sql = "update " + table +
                 " set " +
                 " time = '" + newTime + "'" +
                 " where " +
@@ -260,5 +266,48 @@ public class EditPlanFragment extends Fragment{
             choicedTime = item;
             println("choicedTime : " + item);
         }
+    }
+
+    public void dropDownItem(String table) {
+        String sql = "delete from " + table;
+
+        Log.d(TAG, "sql : " + sql);
+        PlannerDatabase database = PlannerDatabase.getInstance(context);
+        database.exeSQL(sql);
+    }
+
+    public void copyTableItem(String oldTable, String newTable) {
+        String sql = "insert into " + newTable + " select * from " + oldTable;
+
+        Log.d(TAG, "sql : " + sql);
+        PlannerDatabase database = PlannerDatabase.getInstance(context);
+        database.exeSQL(sql);
+    }
+
+    public void switchTable(String week, String time) {
+        println("switchTable called, week = " + week + " , time = " + time);
+
+        if (week.equals("일요일") && time.equals("조식")) { choicedTable = DatabaseName.TABLE_SUN_BRE; println(choicedTable);}
+        else if (week.equals("일요일") && time.equals("중식")) { choicedTable = DatabaseName.TABLE_SUN_LUN; println(choicedTable);}
+        else if (week.equals("일요일") && time.equals("석식")) { choicedTable = DatabaseName.TABLE_SUN_DIN; println(choicedTable);}
+        else if (week.equals("월요일") && time.equals("조식")) { choicedTable = DatabaseName.TABLE_MON_BRE; println(choicedTable);}
+        else if (week.equals("월요일") && time.equals("중식")) { choicedTable = DatabaseName.TABLE_MON_LUN; println(choicedTable);}
+        else if (week.equals("월요일") && time.equals("석식")) { choicedTable = DatabaseName.TABLE_MON_DIN; println(choicedTable);}
+        else if (week.equals("화요일") && time.equals("조식")) { choicedTable = DatabaseName.TABLE_TUE_BRE; println(choicedTable);}
+        else if (week.equals("화요일") && time.equals("중식")) { choicedTable = DatabaseName.TABLE_TUE_LUN; println(choicedTable);}
+        else if (week.equals("화요일") && time.equals("석식")) { choicedTable = DatabaseName.TABLE_TUE_DIN; println(choicedTable);}
+        else if (week.equals("수요일") && time.equals("조식")) { choicedTable = DatabaseName.TABLE_WED_BRE; println(choicedTable);}
+        else if (week.equals("수요일") && time.equals("중식")) { choicedTable = DatabaseName.TABLE_WED_LUN; println(choicedTable);}
+        else if (week.equals("수요일") && time.equals("석식")) { choicedTable = DatabaseName.TABLE_WED_DIN; println(choicedTable);}
+        else if (week.equals("목요일") && time.equals("조식")) { choicedTable = DatabaseName.TABLE_THU_BRE; println(choicedTable);}
+        else if (week.equals("목요일") && time.equals("중식")) { choicedTable = DatabaseName.TABLE_THU_LUN; println(choicedTable);}
+        else if (week.equals("목요일") && time.equals("석식")) { choicedTable = DatabaseName.TABLE_THU_DIN; println(choicedTable);}
+        else if (week.equals("금요일") && time.equals("조식")) { choicedTable = DatabaseName.TABLE_FRI_BRE; println(choicedTable);}
+        else if (week.equals("믐요일") && time.equals("중식")) { choicedTable = DatabaseName.TABLE_FRI_LUN; println(choicedTable);}
+        else if (week.equals("금요일") && time.equals("석식")) { choicedTable = DatabaseName.TABLE_FRI_DIN; println(choicedTable);}
+        else{println("올바른 대상이 아닙니다"); println(choicedTable);}
+
+
+
     }
 }

@@ -18,6 +18,7 @@ public class PlannerDatabase {
 
     private PlannerDatabase(Context context) {
         this.context = context;
+        open();
     }
 
     public static PlannerDatabase getInstance(Context context) {
@@ -82,28 +83,32 @@ public class PlannerDatabase {
         public void onCreate(SQLiteDatabase db) {
             println("creating database [" + DatabaseName.DATABASE_NAME + "].");
 
-            println("creating table [" + DatabaseName.TABLE_PLANNER + "].");
+            for(String table : DatabaseName.TABLE) {
+                println("creating table [" + table + "].");
 
-            String DROP_SQL = "drop table if exists " + DatabaseName.TABLE_PLANNER;
-            try{
-                db.execSQL(DROP_SQL);
-            }catch (Exception ex) {
-                Log.d(TAG, "Exception in DROP_SQL", ex);
+                String DROP_SQL = "drop table if exists " + table;
+                try {
+                    db.execSQL(DROP_SQL);
+                } catch (Exception ex) {
+                    Log.e(TAG, "Exception in DROP_SQL", ex);
+                }
+
+                String CREATE_SQL = "create table " + table + "("
+                        + " _id INTEGER, "
+                        + "week text, "
+                        + "time text, "
+                        + "mainSub text, "
+                        + "categorie text, "
+                        + "menu text)";
+
+                try {
+                    db.execSQL(CREATE_SQL);
+                } catch (Exception ex) {
+                    Log.e(TAG, "Exception in CREATE_SQL", ex);
+                }
             }
 
-            String CREATE_SQL = "create table " + DatabaseName.TABLE_PLANNER + "("
-                + " _id INTEGER, "
-                    +"week text, "
-                    +"time text, "
-                    +"mainSub text, "
-                    +"categorie text, "
-                    +"menu text)";
 
-            try {
-                db.execSQL(CREATE_SQL);
-            }catch (Exception ex) {
-                Log.e(TAG, "Exception in CREATE_SQL", ex);
-            }
         }
 
         public void onOpen(SQLiteDatabase db) {
@@ -113,7 +118,10 @@ public class PlannerDatabase {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             println("Upgrading database from version " + oldVersion + " to " + newVersion + ".");
         }
+
+
     }
+
 
 
     private void println(String msg) {
