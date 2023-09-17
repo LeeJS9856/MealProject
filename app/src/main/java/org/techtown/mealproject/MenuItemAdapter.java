@@ -2,7 +2,9 @@ package org.techtown.mealproject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,7 +18,8 @@ import java.util.ArrayList;
 
 
 public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemViewHolder> implements ItemTouchHelperListener {
-    ArrayList<String> item = new ArrayList<>();
+    private static final String TAG = "MenuItemAdapter";
+    ArrayList<Planner> item = new ArrayList<>();
     Context context;
 
     public MenuItemAdapter(Context context) {
@@ -38,6 +41,8 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
             @Override
             public void onClick(View v) {
                 removeItem(holder.getAdapterPosition());
+
+
             }
         });
     }
@@ -47,14 +52,16 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
         return item.size();
     }
 
-    public void addItem(String menuItem) {
+    public void addItem(Planner menuItem) {
         item.add(menuItem);
+    }
+
+    public void setItems(ArrayList<Planner> items) {
+        this.item = items;
     }
 
     @Override
     public void onItemClick(int position) {
-        item.remove(position);
-        notifyItemRemoved(position);
     }
 
     @Override
@@ -65,7 +72,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
 
     @Override
     public boolean onItemMove(int from_position, int to_position) {
-        String menuItem = item.get(from_position);
+        Planner menuItem = item.get(from_position);
         item.remove(from_position);
         item.add(to_position,menuItem);
         notifyItemMoved(from_position,to_position);
@@ -75,7 +82,12 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
     public void removeItem(int position) {
         item.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, item.size());
+        deletePlan(position);
+
+
+        for(int i=position;i<item.size();i++) {
+            modifyID(i , i+1);
+        }
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -91,11 +103,37 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
 
         }
 
-        public void onBind(String menuItem) {
-            menuText.setText(menuItem);
+        public void onBind(Planner menuItem) {
+            menuText.setText(menuItem.getMenu());
         }
 
 
     }
 
+    private void deletePlan(int id) {
+        println("deletePlan called.");
+        String sql = "delete from " + AddMenuFragment.choicedTable +
+                " where " +
+                " _id = " + id;
+
+        Log.d(TAG, "sql : " + sql);
+        MenuDatabase database = MenuDatabase.getInstance(context);
+        database.exeSQL(sql);
+    }
+
+    private void modifyID(int newNum, int oldNum) {
+        String sql = "update " + AddMenuFragment.choicedTable +
+                " set " +
+                " _id = " + newNum +
+                " where " +
+                " _id = " + oldNum;
+
+        Log.d(TAG, "sql : " + sql);
+        MenuDatabase database = MenuDatabase.getInstance(context);
+        database.exeSQL(sql);
+    }
+
+    private void println(String msg) {
+        Log.d(TAG, msg);
+    }
 }

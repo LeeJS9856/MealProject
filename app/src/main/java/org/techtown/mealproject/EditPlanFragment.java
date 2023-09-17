@@ -42,7 +42,8 @@ public class EditPlanFragment extends Fragment{
     private String choicedWeek = "일요일";
     private String choicedTime = "조식";
 
-    private String choicedTable = DatabaseName.TABLE_PLANNER;
+    public static String choicedTable = DatabaseName.TABLE_PLANNER;
+    int listCount = 0;
 
 //여기 더 추가할것
     public static EditPlanFragment newInstance() {
@@ -122,7 +123,7 @@ public class EditPlanFragment extends Fragment{
 
         addCardButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int listCount = 0;
+
                 plannerList.add(new Planner(0,"", "", "메인메뉴", "카테고리", "메뉴"));
                 itemAdapter.addItem(plannerList.get(listCount));
                 Log.d(TAG, "Planner = " + recordCount(choicedTable));
@@ -175,7 +176,7 @@ public class EditPlanFragment extends Fragment{
                 "'"+ "" + "', " +
                 "'"+ mainSub + "', " +
                 "'"+ categorie + "', " +
-                "'"+ menu + id + "')";
+                "'"+ menu + "')";
         Log.d(TAG, "sql : "+ sql);
         PlannerDatabase database = PlannerDatabase.getInstance(context);
         database.exeSQL(sql);
@@ -215,6 +216,7 @@ public class EditPlanFragment extends Fragment{
 
             itemAdapter.setItems(items);
             itemAdapter.notifyDataSetChanged();
+            listCount = 0;
         }
         return recordCount;
     }
@@ -270,14 +272,6 @@ public class EditPlanFragment extends Fragment{
 
     public void dropDownItem(String table) {
         String sql = "delete from " + table;
-
-        Log.d(TAG, "sql : " + sql);
-        PlannerDatabase database = PlannerDatabase.getInstance(context);
-        database.exeSQL(sql);
-    }
-
-    public void copyTableItem(String oldTable, String newTable) {
-        String sql = "insert into " + newTable + " select * from " + oldTable;
 
         Log.d(TAG, "sql : " + sql);
         PlannerDatabase database = PlannerDatabase.getInstance(context);

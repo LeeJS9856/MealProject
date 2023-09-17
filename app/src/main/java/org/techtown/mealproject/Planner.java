@@ -17,6 +17,15 @@ public class Planner {
         this.time = time;
         this.menu = menu;
     }
+
+    public Planner(String mainsub, String categorie, String menu) {
+        this._id = 0;
+        this.week = "";
+        this.time = "";
+        this.mainsub = mainsub;
+        this.categorie = categorie;
+        this.menu = menu;
+    }
     public Planner()
     {
         this(0,"일요일", "조식", "메인메뉴", "카테고리", "메뉴");

@@ -112,7 +112,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     private void deletePlan(int id) {
         println("deletePlan called.");
-        String sql = "delete from " + DatabaseName.TABLE_PLANNER +
+        String sql = "delete from " + EditPlanFragment.choicedTable +
                 " where " +
                 " _id = " + id;
 
@@ -122,7 +122,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }
 
     private void modifyID(int newNum, int oldNum) {
-        String sql = "update " + DatabaseName.TABLE_PLANNER +
+        String sql = "update " + EditPlanFragment.choicedTable +
                 " set " +
                 " _id = " + newNum +
                 " where " +

@@ -6,31 +6,29 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class PlannerDatabase {
-    private static final String TAG = "PlannerDatabase";
-    private static PlannerDatabase database;
-
+public class MenuDatabase {
+    private static final String TAG = "MenuDatabase";
+    private static MenuDatabase database;
     public static int DATABASE_VERSION = 1;
-
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private final Context context;
 
-    private PlannerDatabase(Context context) {
+    private MenuDatabase(Context context) {
         this.context = context;
         open();
     }
 
-    public static PlannerDatabase getInstance(Context context) {
+    public static MenuDatabase getInstance(Context context) {
         if(database == null) {
-            database = new PlannerDatabase(context);
+            database = new MenuDatabase(context);
         }
 
         return database;
     }
 
     public boolean open() {
-        println("opening database [" + DatabaseName.PLANNER_DATABASE + "].");
+        println("opening database [" + DatabaseName.MENU_DATABASE + "].");
 
         dbHelper = new DatabaseHelper(context);
         db = dbHelper.getWritableDatabase();
@@ -39,7 +37,7 @@ public class PlannerDatabase {
     }
 
     public void close() {
-        println("closing database [" + DatabaseName.PLANNER_DATABASE + "].");
+        println("closing database [" + DatabaseName.MENU_DATABASE + "].");
         db.close();
 
         database = null;
@@ -77,13 +75,13 @@ public class PlannerDatabase {
 
     private class DatabaseHelper extends SQLiteOpenHelper {
         public DatabaseHelper(Context context) {
-            super(context, DatabaseName.PLANNER_DATABASE, null, DATABASE_VERSION);
+            super(context, DatabaseName.MENU_DATABASE, null, DATABASE_VERSION);
         }
 
         public void onCreate(SQLiteDatabase db) {
-            println("creating database [" + DatabaseName.PLANNER_DATABASE + "].");
+            println("creating database [" + DatabaseName.MENU_DATABASE + "].");
 
-            for(String table : DatabaseName.TABLE) {
+            for (String table : DatabaseName.MENU_TABLE) {
                 println("creating table [" + table + "].");
 
                 String DROP_SQL = "drop table if exists " + table;
@@ -112,19 +110,15 @@ public class PlannerDatabase {
         }
 
         public void onOpen(SQLiteDatabase db) {
-            println("opened database [" + DatabaseName.PLANNER_DATABASE + "].");
+            println("opened database [" + DatabaseName.MENU_DATABASE + "].");
         }
 
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             println("Upgrading database from version " + oldVersion + " to " + newVersion + ".");
         }
-
-
     }
-
-
 
     private void println(String msg) {
-        Log.d(TAG, msg);
-    }
+            Log.d(TAG, msg);
+        }
 }
