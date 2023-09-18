@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -48,7 +49,21 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
+            updateNavigationBarState(item.getItemId());
+
             return true;
+        }
+    }
+
+    public void updateNavigationBarState(int actionId){
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
+        Menu menu = bottomNavigationView.getMenu();
+
+        for (int i = 0, size = menu.size(); i < size; i++) {
+            MenuItem item = menu.getItem(i);
+            item.setChecked(item.getItemId() == actionId);
         }
     }
 

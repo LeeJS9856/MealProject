@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -45,7 +48,6 @@ public class EditPlanFragment extends Fragment{
     public static String choicedTable = DatabaseName.TABLE_PLANNER;
     int listCount = 0;
 
-//여기 더 추가할것
     public static EditPlanFragment newInstance() {
         return new EditPlanFragment();
     }
@@ -149,6 +151,9 @@ public class EditPlanFragment extends Fragment{
             public void onClick(View v) {
                 dropDownItem(choicedTable);
                 ((MainActivity)getActivity()).replaceFragment(PlannerFragment.newInstance());
+                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
+                bottomNavigationView.setSelectedItemId(R.id.plannerTab);
+
             }
         });
     }
@@ -159,6 +164,8 @@ public class EditPlanFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 ((MainActivity)getActivity()).replaceFragment(PlannerFragment.newInstance());
+                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
+                bottomNavigationView.setSelectedItemId(R.id.plannerTab);
             }
         });
     }
@@ -300,8 +307,5 @@ public class EditPlanFragment extends Fragment{
         else if (week.equals("믐요일") && time.equals("중식")) { choicedTable = DatabaseName.TABLE_FRI_LUN; println(choicedTable);}
         else if (week.equals("금요일") && time.equals("석식")) { choicedTable = DatabaseName.TABLE_FRI_DIN; println(choicedTable);}
         else{println("올바른 대상이 아닙니다"); println(choicedTable);}
-
-
-
     }
 }

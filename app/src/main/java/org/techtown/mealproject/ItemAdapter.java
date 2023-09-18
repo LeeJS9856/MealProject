@@ -3,6 +3,7 @@ package org.techtown.mealproject;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.GnssAntennaInfo;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.animation.AnimatableView;
@@ -57,6 +59,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public void onItemClick(int position) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("position", position);
+
     }
 
 
