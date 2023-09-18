@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -44,6 +45,9 @@ public class AddMenuFragment extends Fragment {
 
     String choicedMainSub = "메인메뉴";
     String choicedCategorie = "반찬";
+
+
+    int position = 0;
 
     int listCount = 0;
 
@@ -75,6 +79,12 @@ public class AddMenuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.add_menu_fragment, container, false);
         initUI(rootView);
+
+        if(getArguments() != null) {
+            position = getArguments().getInt("position");
+            println("////////////position " + position);
+        }
+
         loadPlannerListData(choicedTable);
         return rootView;
     }
@@ -120,6 +130,8 @@ public class AddMenuFragment extends Fragment {
                     editText.setText(null);
                     hideKeyboard();
                     listCount++;
+
+
                 }
                 else {
                     Toast.makeText(getContext(), "메뉴를 입력하세요", Toast.LENGTH_LONG).show();

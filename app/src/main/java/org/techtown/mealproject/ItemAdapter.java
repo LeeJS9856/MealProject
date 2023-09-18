@@ -1,6 +1,7 @@
 package org.techtown.mealproject;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.location.GnssAntennaInfo;
 import android.os.Bundle;
@@ -15,10 +16,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.animation.AnimatableView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -40,12 +43,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.edit_plan_cardview, parent, false);
-        return new ItemViewHolder(v);
+
+        return new ItemViewHolder(v, context);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         holder.onBind(item.get(position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.clickCardViewEvent(holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -59,12 +69,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public void onItemClick(int position) {
-        Bundle bundle = new Bundle();
-        bundle.putInt("position", position);
 
     }
-
-
 
     public void setItems(ArrayList<Planner> items) {
         this.item = items;
@@ -95,22 +101,47 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
+        Context context;
         CardView itemCard;
         TextView mainsubText;
         TextView categorieText;
         TextView menuText;
-        public ItemViewHolder(View itemView) {
+        public ItemViewHolder(View itemView, Context context) {
             super(itemView);
+            this.context = context;
+
             itemCard = itemView.findViewById(R.id.edit_plan_cardview);
             mainsubText = itemView.findViewById(R.id.MainSubText);
             categorieText = itemView.findViewById(R.id.CategorieText);
             menuText = itemView.findViewById(R.id.MenuText);
+            AddMenuFragment addMenuFragment = new AddMenuFragment();
+            itemCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickCardViewEvent(getAdapterPosition());
+                }
+            });
         }
 
         public void onBind(Planner planner) {
             mainsubText.setText(planner.getMainsub());
             categorieText.setText(planner.getCategorie());
             menuText.setText(planner.getMenu());
+
+
+        }
+
+        public void clickCardViewEvent(int position) {
+            Bundle bundle = new Bundle();
+            bundle.putInt("position", position);
+            MainActivity activity = (MainActivity) context;
+            FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+            AddMenuFragment addMenuFragment = new AddMenuFragment();
+            addMenuFragment.setArguments(bundle);
+            transaction.replace(R.id.container, addMenuFragment);
+            transaction.commit();
+            BottomNavigationView bottomNavigationView = activity.findViewById(R.id.bottom_navigation);
+            bottomNavigationView.setSelectedItemId(R.id.addMenuTab);
         }
 
     }

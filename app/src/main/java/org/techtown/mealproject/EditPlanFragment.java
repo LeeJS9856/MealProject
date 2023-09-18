@@ -150,7 +150,6 @@ public class EditPlanFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 dropDownItem(choicedTable);
-                ((MainActivity)getActivity()).replaceFragment(PlannerFragment.newInstance());
                 BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
                 bottomNavigationView.setSelectedItemId(R.id.plannerTab);
 
@@ -163,7 +162,6 @@ public class EditPlanFragment extends Fragment{
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).replaceFragment(PlannerFragment.newInstance());
                 BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
                 bottomNavigationView.setSelectedItemId(R.id.plannerTab);
             }

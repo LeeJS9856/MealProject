@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
+import android.content.ClipData;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
     private final PlannerFragment plannerFragment = new PlannerFragment();
     private final EditPlanFragment editPlanFragment = new EditPlanFragment();
     private final AddMenuFragment addMenuFragment = new AddMenuFragment();
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             item.setChecked(item.getItemId() == actionId);
         }
     }
+
 
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
