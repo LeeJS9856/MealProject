@@ -1,11 +1,14 @@
 package org.techtown.mealproject;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,13 +19,26 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class DailyPlannerFragment extends Fragment {
     Context context;
     TabLayout.OnTabSelectedListener listener;
+    private final String TAG = "DailyPlannerFragment";
 
+    TextView breakfastCategorie;
+    TextView lunchCategorie;
+    TextView dinnerCategorie;
+    TextView breakfastMenu;
+    TextView lunchMenu;
+    TextView dinnerMenu;
+    String table_bre = "";
+    String table_lun = "";
+    String table_din = "";
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -50,6 +66,8 @@ public class DailyPlannerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.daily_planner_fragment, container, false);
 
+        findID(rootView);
+        defineTable(getCurrentWeek());
         initUI(rootView);
 
         return rootView;
@@ -58,6 +76,9 @@ public class DailyPlannerFragment extends Fragment {
 
     private void initUI(ViewGroup rootView) {
         initClickEvent(rootView);
+        initCardViewMenu(table_bre,breakfastCategorie, breakfastMenu);
+        initCardViewMenu(table_lun,lunchCategorie, lunchMenu);
+        initCardViewMenu(table_din,dinnerCategorie, dinnerMenu);
     }
 
     public void initClickEvent(ViewGroup rootView) {
@@ -109,5 +130,103 @@ public class DailyPlannerFragment extends Fragment {
             case 7: dayOfWeek = "일요일"; break;
         }
         return dayOfWeek;
+    }
+    public int initCardViewMenu(String table, TextView categorieText, TextView menuText) {
+        println("initCardViewMenu called.");
+        String sql = "select _id, week, time, mainSub, categorie, menu from " + table;
+
+        int recordCount = -1;
+
+        PlannerDatabase database = PlannerDatabase.getInstance(context);
+
+        if(database != null) {
+            Cursor outCursor = database.rawQuery(sql);
+            recordCount = outCursor.getCount();
+            println("record count : " + recordCount + "\n");
+            String text = "";
+
+            ArrayList<Planner> items = new ArrayList<Planner>();
+            for(int i = 0;i<recordCount;i++) {
+                outCursor.moveToNext();
+
+                int _id = outCursor.getInt(0);
+                String week = outCursor.getString(1);
+                String time = outCursor.getString(2);
+                String mainSub = outCursor.getString(3);
+                String categorie = outCursor.getString(4);
+                String menu = outCursor.getString(5);
+
+                println("#" + i + " -> " + _id + ", " + week + ", " + time + ", " + mainSub + ", " + categorie + ", " + menu);
+                items.add(new Planner(_id, week, time, mainSub, categorie, menu));
+
+
+
+                if(i==0) {
+                    categorieText.setText(categorie);
+                    menuText.setText(menu);
+                    text = menu;
+                }
+                else {
+                    text = text + "\n" + menu;
+                    menuText.setText(text);
+                }
+            }
+
+            outCursor.close();
+        }
+        return recordCount;
+    }
+
+    public void findID(ViewGroup rootView) {
+        breakfastCategorie = rootView.findViewById(R.id.breakfastCategorie);
+        lunchCategorie = rootView.findViewById(R.id.lunchCategorie);
+        dinnerCategorie = rootView.findViewById(R.id.dinnerCategorie);
+        breakfastMenu = rootView.findViewById(R.id.breakfastMenu);
+        lunchMenu = rootView.findViewById(R.id.lunchMenu);
+        dinnerMenu = rootView.findViewById(R.id.dinnerMenu);
+    }
+
+    public void println(String data) {
+        Log.d(TAG, data);
+    }
+
+    public void defineTable(String week) {
+        switch (week) {
+            case "일요일" :
+                table_bre = DatabaseName.TABLE_SUN_BRE;
+                table_lun = DatabaseName.TABLE_SUN_LUN;
+                table_din = DatabaseName.TABLE_SUN_DIN;
+                break;
+
+            case "월요일" :
+                table_bre = DatabaseName.TABLE_MON_BRE;
+                table_lun = DatabaseName.TABLE_MON_LUN;
+                table_din = DatabaseName.TABLE_MON_DIN;
+                break;
+
+            case "화요일" :
+                table_bre = DatabaseName.TABLE_TUE_BRE;
+                table_lun = DatabaseName.TABLE_TUE_LUN;
+                table_din = DatabaseName.TABLE_TUE_DIN;
+                break;
+
+            case "수요일" :
+                table_bre = DatabaseName.TABLE_WED_BRE;
+                table_lun = DatabaseName.TABLE_WED_LUN;
+                table_din = DatabaseName.TABLE_WED_DIN;
+                break;
+
+            case "목요일" :
+                table_bre = DatabaseName.TABLE_THU_BRE;
+                table_lun = DatabaseName.TABLE_THU_LUN;
+                table_din = DatabaseName.TABLE_THU_DIN;
+                break;
+
+            case "금요일" :
+                table_bre = DatabaseName.TABLE_FRI_BRE;
+                table_lun = DatabaseName.TABLE_FRI_LUN;
+                table_din = DatabaseName.TABLE_FRI_DIN;
+                break;
+        }
     }
 }
