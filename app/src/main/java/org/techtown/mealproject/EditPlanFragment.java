@@ -42,12 +42,14 @@ public class EditPlanFragment extends Fragment{
     private SpinnerAdapter weekAdapter, timeAdapter;
 
     private String choicedItem = "";
-    private String choicedWeek = "일요일";
-    private String choicedTime = "조식";
+    public static String choicedWeek = "일요일";
+    public static String choicedTime = "조식";
 
-    private String choicedMainSub = "";
-    private String choicedCategorie = "";
-    private String choicedMenu = "";
+    private String gotMainSub = "";
+    private String gotCategorie = "";
+    private String gotMenu = "";
+    private String gotWeek = "";
+    private String gotTime = "";
     private int position = 0;
 
     public static String choicedTable = DatabaseName.TABLE_PLANNER;
@@ -78,36 +80,44 @@ public class EditPlanFragment extends Fragment{
         initUI(rootView);
 
         if(getArguments() != null) {
-
-            choicedMainSub = getArguments().getString("mainsub");
-            choicedCategorie = getArguments().getString("categorie");
-            choicedMenu = getArguments().getString("menu");
+            gotMainSub = getArguments().getString("mainsub");
+            gotCategorie = getArguments().getString("categorie");
+            gotMenu = getArguments().getString("menu");
             position = getArguments().getInt("position");
-            modifyData(choicedTable, position, choicedMainSub, choicedCategorie, choicedMenu);
-        }
+            if(gotMainSub!=null && gotCategorie!=null &&gotMenu!=null)
+                modifyData(choicedTable, position, gotMainSub, gotCategorie, gotMenu);
 
-        switchTable(choicedWeek, choicedTime);
-        loadPlannerListData(choicedTable);
+            gotWeek = getArguments().getString("week");
+            gotTime = getArguments().getString("time");
+            if(gotWeek != null && gotTime != null) {
+                choicedWeek = gotWeek;
+                choicedTime = gotTime;
+
+                println("받은 DATA : week " + choicedWeek +", time " + choicedTime);
+            }
+
+        }
+        weekSpinner = rootView.findViewById(R.id.WeekSpinner);
+        timeSpinner = rootView.findViewById(R.id.TimeSpinner);
+
+        initSpinner(weekAdapter, weekSpinner, weeklist, choicedWeek);
+        initSpinner(timeAdapter, timeSpinner, timelist, choicedTime);
 
         return rootView;
     }
 
     public void initUI(ViewGroup rootView){
-        weekSpinner = rootView.findViewById(R.id.WeekSpinner);
-        timeSpinner = rootView.findViewById(R.id.TimeSpinner);
-
-        initSpinner(weekAdapter, weekSpinner, weeklist);
-        initSpinner(timeAdapter, timeSpinner, timelist);
-
         initRecyView(rootView);
         addCardView(rootView);
         initBackButton(rootView);
         initSavePlanButton(rootView);
     }
 
-    public void initSpinner(SpinnerAdapter adapter,Spinner spinner, List<String> list) {
+    public void initSpinner(SpinnerAdapter adapter,Spinner spinner, List<String> list, String item) {
         adapter = new SpinnerAdapter(context, list);
         spinner.setAdapter(adapter);
+        spinner.setSelection(getIndex(spinner, item));
+        println("spinner setSelection " + item);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -115,6 +125,7 @@ public class EditPlanFragment extends Fragment{
                 SaveChoicedItem(choicedItem);
                 switchTable(choicedWeek, choicedTime);
                 loadPlannerListData(choicedTable);
+
             }
 
             @Override
@@ -122,6 +133,15 @@ public class EditPlanFragment extends Fragment{
 
             }
         });
+    }
+
+    private int getIndex(Spinner spinner, String item) {
+        for(int i = 0;i<spinner.getCount();i++) {
+            if(spinner.getItemAtPosition(i).toString().equalsIgnoreCase(item)) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     public void initRecyView(ViewGroup rootView) {

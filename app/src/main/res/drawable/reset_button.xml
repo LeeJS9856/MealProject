@@ -6,9 +6,9 @@
         android:width="40dp"/>
     <stroke
         android:width="5dp"
-        android:color="@color/sky"/>
+        android:color="@color/customBlue"/>
     <solid
-        android:color="@color/sky"/>
+        android:color="@color/customBlue"/>
 
     <corners
         android:radius="10dp"/>

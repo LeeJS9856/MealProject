@@ -28,6 +28,8 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
 
     String choicedMainSub = "메인메뉴";
     String choicedCategorie = "반찬";
+    String gotWeek = "";
+    String gotTime = "";
     int getPosition = 0;
 
     public MenuItemAdapter(Context context) {
@@ -57,7 +59,12 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
                 choicedMainSub = AddMenuFragment.choicedMainSub;
                 choicedCategorie = AddMenuFragment.choicedCategorie;
                 getPosition = AddMenuFragment.position;
-                holder.clickCardViewEvent(getPosition,choicedMainSub, choicedCategorie, item.get(holder.getAdapterPosition()).getMenu());
+                gotWeek = AddMenuFragment.gotWeek;
+                gotTime = AddMenuFragment.gotTime;
+
+                if(getPosition > -1) {
+                    holder.clickCardViewEvent(getPosition, gotWeek, gotTime, choicedMainSub, choicedCategorie, item.get(holder.getAdapterPosition()).getMenu());
+                }
             }
         });
     }
@@ -124,20 +131,23 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
         }
 
 
-        public void clickCardViewEvent(int position, String mainSub, String categorie, String menu) {
+        public void clickCardViewEvent(int position, String week, String time, String mainSub, String categorie, String menu) {
             Bundle bundle = new Bundle();
+            bundle.putString("week", week);
+            bundle.putString("time", time);
             bundle.putString("categorie", categorie);
             bundle.putString("menu", menu);
             bundle.putString("mainsub", mainSub);
             bundle.putInt("position", position);
             MainActivity activity = (MainActivity) context;
+            BottomNavigationView bottomNavigationView = activity.findViewById(R.id.bottom_navigation);
+            bottomNavigationView.setSelectedItemId(R.id.planEditTab);
             FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
             EditPlanFragment editPlanFragment = new EditPlanFragment();
             editPlanFragment.setArguments(bundle);
             transaction.replace(R.id.container, editPlanFragment);
             transaction.commit();
-            BottomNavigationView bottomNavigationView = activity.findViewById(R.id.bottom_navigation);
-            bottomNavigationView.setSelectedItemId(R.id.addMenuTab);
+
         }
     }
 

@@ -47,7 +47,9 @@ public class AddMenuFragment extends Fragment {
     public static String choicedCategorie = "반찬";
 
 
-    public static int position = 0;
+    public static int position = -1;
+    public static String gotWeek = "";
+    public static String gotTime = "";
 
     int listCount = 0;
 
@@ -82,7 +84,10 @@ public class AddMenuFragment extends Fragment {
 
         if(getArguments() != null) {
             position = getArguments().getInt("position");
+            gotWeek = getArguments().getString("week");
+            gotTime = getArguments().getString("time");
         }
+        choicedTable = DatabaseName.TABLE_BANCHAN;
         loadPlannerListData(choicedTable);
 
         return rootView;
