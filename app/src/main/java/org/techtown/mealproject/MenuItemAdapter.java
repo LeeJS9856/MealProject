@@ -2,6 +2,7 @@ package org.techtown.mealproject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,7 +13,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -21,6 +25,10 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
     private static final String TAG = "MenuItemAdapter";
     ArrayList<Planner> item = new ArrayList<>();
     Context context;
+
+    String choicedMainSub = "메인메뉴";
+    String choicedCategorie = "반찬";
+    int getPosition = 0;
 
     public MenuItemAdapter(Context context) {
         this.context = context;
@@ -31,7 +39,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.add_menu_cardview, parent, false);
-        return new ItemViewHolder(v);
+        return new ItemViewHolder(v, context);
     }
 
     @Override
@@ -41,8 +49,15 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
             @Override
             public void onClick(View v) {
                 removeItem(holder.getAdapterPosition());
-
-
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choicedMainSub = AddMenuFragment.choicedMainSub;
+                choicedCategorie = AddMenuFragment.choicedCategorie;
+                getPosition = AddMenuFragment.position;
+                holder.clickCardViewEvent(getPosition,choicedMainSub, choicedCategorie, item.get(holder.getAdapterPosition()).getMenu());
             }
         });
     }
@@ -92,15 +107,16 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         CardView itemCard;
+        Context context;
         TextView menuText;
+
         Button deleteCardButton;
-        public ItemViewHolder(View itemView) {
+        public ItemViewHolder(View itemView, Context context) {
             super(itemView);
+            this.context = context;
             itemCard = itemView.findViewById(R.id.add_menu_cardView);
             menuText = itemView.findViewById(R.id.MenuTextView);
             deleteCardButton = itemView.findViewById(R.id.deleteCardViewButton);
-
-
         }
 
         public void onBind(Planner menuItem) {
@@ -108,6 +124,21 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
         }
 
 
+        public void clickCardViewEvent(int position, String mainSub, String categorie, String menu) {
+            Bundle bundle = new Bundle();
+            bundle.putString("categorie", categorie);
+            bundle.putString("menu", menu);
+            bundle.putString("mainsub", mainSub);
+            bundle.putInt("position", position);
+            MainActivity activity = (MainActivity) context;
+            FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+            EditPlanFragment editPlanFragment = new EditPlanFragment();
+            editPlanFragment.setArguments(bundle);
+            transaction.replace(R.id.container, editPlanFragment);
+            transaction.commit();
+            BottomNavigationView bottomNavigationView = activity.findViewById(R.id.bottom_navigation);
+            bottomNavigationView.setSelectedItemId(R.id.addMenuTab);
+        }
     }
 
     private void deletePlan(int id) {
@@ -132,6 +163,8 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
         MenuDatabase database = MenuDatabase.getInstance(context);
         database.exeSQL(sql);
     }
+
+
 
     private void println(String msg) {
         Log.d(TAG, msg);

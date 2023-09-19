@@ -45,6 +45,11 @@ public class EditPlanFragment extends Fragment{
     private String choicedWeek = "일요일";
     private String choicedTime = "조식";
 
+    private String choicedMainSub = "";
+    private String choicedCategorie = "";
+    private String choicedMenu = "";
+    private int position = 0;
+
     public static String choicedTable = DatabaseName.TABLE_PLANNER;
     int listCount = 0;
 
@@ -71,8 +76,19 @@ public class EditPlanFragment extends Fragment{
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.edit_plan_fragment, container, false);
 
         initUI(rootView);
+
+        if(getArguments() != null) {
+
+            choicedMainSub = getArguments().getString("mainsub");
+            choicedCategorie = getArguments().getString("categorie");
+            choicedMenu = getArguments().getString("menu");
+            position = getArguments().getInt("position");
+            modifyData(choicedTable, position, choicedMainSub, choicedCategorie, choicedMenu);
+        }
+
         switchTable(choicedWeek, choicedTime);
         loadPlannerListData(choicedTable);
+
         return rootView;
     }
 
@@ -259,6 +275,20 @@ public class EditPlanFragment extends Fragment{
                 " time = '" + newTime + "'" +
                 " where " +
                 " time = '" + oldTime + "'";
+
+        Log.d(TAG, "sql : " + sql);
+        PlannerDatabase database = PlannerDatabase.getInstance(context);
+        database.exeSQL(sql);
+    }
+
+    private void modifyData(String table, int position, String mainSub, String categorie, String menu) {
+        String sql = "update " + table +
+                " set" +
+                " mainSub = '" + mainSub + "' ," +
+                " categorie = '" + categorie + "' ," +
+                " menu = '" + menu + "' " +
+                " where" +
+                " _id = " + position;
 
         Log.d(TAG, "sql : " + sql);
         PlannerDatabase database = PlannerDatabase.getInstance(context);

@@ -43,11 +43,11 @@ public class AddMenuFragment extends Fragment {
     RecyclerView addMenuRecyclerView;
     MenuItemAdapter menuItemAdapter;
 
-    String choicedMainSub = "메인메뉴";
-    String choicedCategorie = "반찬";
+    public static String choicedMainSub = "메인메뉴";
+    public static String choicedCategorie = "반찬";
 
 
-    int position = 0;
+    public static int position = 0;
 
     int listCount = 0;
 
@@ -82,10 +82,9 @@ public class AddMenuFragment extends Fragment {
 
         if(getArguments() != null) {
             position = getArguments().getInt("position");
-            println("////////////position " + position);
         }
-
         loadPlannerListData(choicedTable);
+
         return rootView;
     }
 

@@ -114,7 +114,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             mainsubText = itemView.findViewById(R.id.MainSubText);
             categorieText = itemView.findViewById(R.id.CategorieText);
             menuText = itemView.findViewById(R.id.MenuText);
-            AddMenuFragment addMenuFragment = new AddMenuFragment();
             itemCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
