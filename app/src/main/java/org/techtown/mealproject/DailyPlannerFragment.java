@@ -74,7 +74,7 @@ public class DailyPlannerFragment extends Fragment {
     }
 
 
-    private void initUI(ViewGroup rootView) {
+    public void initUI(ViewGroup rootView) {
         initClickEvent(rootView);
         initCardViewMenu(table_bre,breakfastCategorie, breakfastMenu);
         initCardViewMenu(table_lun,lunchCategorie, lunchMenu);
