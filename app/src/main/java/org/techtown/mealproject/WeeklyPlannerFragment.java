@@ -95,7 +95,7 @@ public class WeeklyPlannerFragment extends Fragment {
 
     public void initButtonMenu() {
         for(int i=0;i<Button.size();i++) {
-            loadButtonMenu(DatabaseName.TABLE.get(i+1), Button.get(i));
+            loadButtonMenu(DatabaseName.TABLE.get(i), Button.get(i));
         }
     }
     public int loadButtonMenu(String table, Button buttonText) {

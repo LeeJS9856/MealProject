@@ -26,7 +26,7 @@ public class DatabaseName {
     public static String TABLE_FRI_LUN = "FriLun";
     public static String TABLE_FRI_DIN = "FriDin";
 
-    public static ArrayList<String> TABLE = new ArrayList<>(List.of(TABLE_PLANNER,
+    public static ArrayList<String> TABLE = new ArrayList<>(List.of(
             TABLE_SUN_BRE, TABLE_SUN_LUN, TABLE_SUN_DIN,
             TABLE_MON_BRE, TABLE_MON_LUN, TABLE_MON_DIN,
             TABLE_TUE_BRE, TABLE_TUE_LUN, TABLE_TUE_DIN,

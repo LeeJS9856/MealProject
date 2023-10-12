@@ -41,6 +41,8 @@ public class PlannerFragment extends Fragment {
 
     ArrayList<Button> Button = new ArrayList<>();
 
+    public static String gotFragment = "daily";
+
 
     public static PlannerFragment newInstance() {
         return new PlannerFragment();
@@ -71,11 +73,22 @@ public class PlannerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.planner_fragment, container, false);
 
+        if(getArguments() != null) {
+            gotFragment = getArguments().getString("fragment");
+        }
+
         dailyPlannerFragment = new DailyPlannerFragment();
         weeklyPlannerFragment = new WeeklyPlannerFragment();
-        getChildFragmentManager().beginTransaction().replace(R.id.container, dailyPlannerFragment).commit();
+        if(gotFragment.equals("daily")) {
+            getChildFragmentManager().beginTransaction().replace(R.id.container, dailyPlannerFragment).commit();
+        } else if (gotFragment.equals("weekly")) {
+            setXMLToggle(true, rootView);
+            getChildFragmentManager().beginTransaction().replace(R.id.container, weeklyPlannerFragment).commit();
+        }
 
         initUI(rootView);
+
+
         return rootView;
     }
 
@@ -114,52 +127,6 @@ public class PlannerFragment extends Fragment {
         Log.d("Date", dateFormat.format(currentTime).toString());
     }
 
-    public void defineViewID(ViewGroup rootView) {
-        breakfastCategorie = rootView.findViewById(R.id.breakfastCategorie);
-        lunchCategorie = rootView.findViewById(R.id.lunchCategorie);
-        dinnerCategorie = rootView.findViewById(R.id.dinnerCategorie);
-        breakfastMenu = rootView.findViewById(R.id.breakfastMenu);
-        lunchMenu = rootView.findViewById(R.id.lunchMenu);
-        dinnerMenu = rootView.findViewById(R.id.dinnerMenu);
-
-        sunBre = rootView.findViewById(R.id.sun_b);
-        sunLun = rootView.findViewById(R.id.sun_l);
-        sunDin = rootView.findViewById(R.id.sun_d);
-        monBre = rootView.findViewById(R.id.mon_b);
-        monLun = rootView.findViewById(R.id.mon_l);
-        monDin = rootView.findViewById(R.id.mon_d);
-        tueBre = rootView.findViewById(R.id.tue_b);
-        tueLun = rootView.findViewById(R.id.tue_l);
-        tueDin = rootView.findViewById(R.id.tue_d);
-        wedBre = rootView.findViewById(R.id.wed_b);
-        wedLun = rootView.findViewById(R.id.wed_l);
-        wedDin = rootView.findViewById(R.id.wed_d);
-        thuBre = rootView.findViewById(R.id.thu_b);
-        thuLun = rootView.findViewById(R.id.thu_l);
-        thuDin = rootView.findViewById(R.id.thu_d);
-        friBre = rootView.findViewById(R.id.fri_b);
-        friLun = rootView.findViewById(R.id.fri_l);
-        friDin = rootView.findViewById(R.id.fri_d);
-        Button.add(sunBre);
-        Button.add(sunLun);
-        Button.add(sunDin);
-        Button.add(monBre);
-        Button.add(monLun);
-        Button.add(monDin);
-        Button.add(tueBre);
-        Button.add(tueLun);
-        Button.add(tueDin);
-        Button.add(wedBre);
-        Button.add(wedLun);
-        Button.add(wedDin);
-        Button.add(thuBre);
-        Button.add(thuLun);
-        Button.add(thuDin);
-        Button.add(friBre);
-        Button.add(friLun);
-        Button.add(friDin);
-
-    }
     public void clickResetButton(ViewGroup rootView) {
         Button resetButton = rootView.findViewById(R.id.reset_button);
         resetButton.setOnClickListener(v -> {

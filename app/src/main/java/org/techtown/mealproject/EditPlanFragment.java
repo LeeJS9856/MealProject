@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -100,6 +101,7 @@ public class EditPlanFragment extends Fragment{
             }
 
             gotFragment = getArguments().getString("fragment");
+
 
         }
         weekSpinner = rootView.findViewById(R.id.WeekSpinner);
@@ -203,8 +205,19 @@ public class EditPlanFragment extends Fragment{
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity activity = (MainActivity) context;
                 BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
                 bottomNavigationView.setSelectedItemId(R.id.plannerTab);
+                if(gotFragment!=null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("fragment", gotFragment);
+                    FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+                    PlannerFragment plannerFragment = new PlannerFragment();
+                    plannerFragment.setArguments(bundle);
+                    transaction.replace(R.id.container, plannerFragment);
+                    transaction.commit();
+                }
+
             }
         });
     }
