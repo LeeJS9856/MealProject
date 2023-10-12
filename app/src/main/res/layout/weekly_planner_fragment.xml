@@ -90,20 +90,20 @@
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="Sun_b"
+                        android:text=""
                         />
                     <Button
                         android:id="@+id/sun_l"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="Sun_l" />
+                        android:text="" />
                     <Button
                         android:id="@+id/sun_d"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="sun_d" />
+                        android:text="" />
                 </TableRow>
 
 
@@ -128,19 +128,19 @@
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="mon_b" />
+                        android:text="" />
                     <Button
                         android:id="@+id/mon_l"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="mon_l" />
+                        android:text="" />
                     <Button
                         android:id="@+id/mon_d"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="mon_d" />
+                        android:text="" />
                 </TableRow>
 
                 <TableRow
@@ -164,19 +164,19 @@
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="tue_b" />
+                        android:text="" />
                     <Button
                         android:id="@+id/tue_l"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="tue_l" />
+                        android:text="" />
                     <Button
                         android:id="@+id/tue_d"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="tue_d" />
+                        android:text="" />
                 </TableRow>
 
                 <TableRow
@@ -200,19 +200,19 @@
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="wed_b" />
+                        android:text="" />
                     <Button
                         android:id="@+id/wed_l"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="wed_l" />
+                        android:text="" />
                     <Button
                         android:id="@+id/wed_d"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="wed_d" />
+                        android:text="" />
                 </TableRow>
 
                 <TableRow
@@ -236,19 +236,19 @@
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="thu_b" />
+                        android:text="" />
                     <Button
                         android:id="@+id/thu_l"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="thu_l" />
+                        android:text="" />
                     <Button
                         android:id="@+id/thu_d"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="thu_d" />
+                        android:text="" />
                 </TableRow>
 
                 <TableRow
@@ -272,19 +272,19 @@
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="fri_b" />
+                        android:text="" />
                     <Button
                         android:id="@+id/fri_l"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="fri_l" />
+                        android:text=" " />
                     <Button
                         android:id="@+id/fri_d"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
-                        android:text="fri_d" />
+                        android:text=" " />
                 </TableRow>
             </TableLayout>
         </LinearLayout>

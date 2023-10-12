@@ -44,12 +44,14 @@ public class EditPlanFragment extends Fragment{
     private String choicedItem = "";
     public static String choicedWeek = "일요일";
     public static String choicedTime = "조식";
+    public static String gotFragment = "daily";
 
     private String gotMainSub = "";
     private String gotCategorie = "";
     private String gotMenu = "";
     private String gotWeek = "";
     private String gotTime = "";
+
     private int position = 0;
 
     public static String choicedTable = DatabaseName.TABLE_PLANNER;
@@ -84,6 +86,7 @@ public class EditPlanFragment extends Fragment{
             gotCategorie = getArguments().getString("categorie");
             gotMenu = getArguments().getString("menu");
             position = getArguments().getInt("position");
+
             if(gotMainSub!=null && gotCategorie!=null &&gotMenu!=null)
                 modifyData(choicedTable, position, gotMainSub, gotCategorie, gotMenu);
 
@@ -95,6 +98,8 @@ public class EditPlanFragment extends Fragment{
 
                 println("받은 DATA : week " + choicedWeek +", time " + choicedTime);
             }
+
+            gotFragment = getArguments().getString("fragment");
 
         }
         weekSpinner = rootView.findViewById(R.id.WeekSpinner);

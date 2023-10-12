@@ -93,6 +93,7 @@ public class DailyPlannerFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("week", getCurrentWeek());
                 bundle.putString("time", time);
+                bundle.putString("fragment", "daily");
                 MainActivity activity = (MainActivity) context;
                 BottomNavigationView bottomNavigationView = activity.findViewById(R.id.bottom_navigation);
                 bottomNavigationView.setSelectedItemId(R.id.planEditTab);

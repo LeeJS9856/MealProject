@@ -34,6 +34,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     Context context;
     String choicedWeek = "일요일";
     String choicedTime = "조식";
+    String gotFragment = "daily";
     private static final String TAG = "ItemAdapter";
 
     public ItemAdapter(Context context) {
@@ -57,7 +58,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             public void onClick(View v) {
                 choicedWeek = EditPlanFragment.choicedWeek;
                 choicedTime = EditPlanFragment.choicedTime;
-                holder.clickCardViewEvent(holder.getAdapterPosition(), choicedWeek, choicedTime);
+                gotFragment = EditPlanFragment.gotFragment;
+                holder.clickCardViewEvent(holder.getAdapterPosition(), choicedWeek, choicedTime, gotFragment);
             }
         });
     }
@@ -128,11 +130,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
         }
 
-        public void clickCardViewEvent(int position, String week, String time) {
+        public void clickCardViewEvent(int position, String week, String time, String fragment) {
             Bundle bundle = new Bundle();
             bundle.putInt("position", position);
             bundle.putString("week", week);
             bundle.putString("time", time);
+            bundle.putString("fragment", fragment);
             MainActivity activity = (MainActivity) context;
             BottomNavigationView bottomNavigationView = activity.findViewById(R.id.bottom_navigation);
             bottomNavigationView.setSelectedItemId(R.id.addMenuTab);

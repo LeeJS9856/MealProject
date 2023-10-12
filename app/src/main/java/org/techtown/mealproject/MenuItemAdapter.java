@@ -28,6 +28,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
 
     String choicedMainSub = "메인메뉴";
     String choicedCategorie = "반찬";
+    String gotFragment = "daily";
     String gotWeek = "";
     String gotTime = "";
     int getPosition = 0;
@@ -61,9 +62,10 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
                 getPosition = AddMenuFragment.position;
                 gotWeek = AddMenuFragment.gotWeek;
                 gotTime = AddMenuFragment.gotTime;
+                gotFragment = AddMenuFragment.gotFragment;
 
                 if(getPosition > -1) {
-                    holder.clickCardViewEvent(getPosition, gotWeek, gotTime, choicedMainSub, choicedCategorie, item.get(holder.getAdapterPosition()).getMenu());
+                    holder.clickCardViewEvent(getPosition, gotFragment, gotWeek, gotTime, choicedMainSub, choicedCategorie, item.get(holder.getAdapterPosition()).getMenu());
                 }
             }
         });
@@ -131,8 +133,9 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ItemVi
         }
 
 
-        public void clickCardViewEvent(int position, String week, String time, String mainSub, String categorie, String menu) {
+        public void clickCardViewEvent(int position, String fragment, String week, String time, String mainSub, String categorie, String menu) {
             Bundle bundle = new Bundle();
+            bundle.putString("fragment", fragment);
             bundle.putString("week", week);
             bundle.putString("time", time);
             bundle.putString("categorie", categorie);

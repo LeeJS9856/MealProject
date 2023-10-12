@@ -149,6 +149,7 @@ public class WeeklyPlannerFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("week", week);
                 bundle.putString("time", time);
+                bundle.putString("fragment", "weekly");
                 MainActivity activity = (MainActivity) context;
                 BottomNavigationView bottomNavigationView = activity.findViewById(R.id.bottom_navigation);
                 bottomNavigationView.setSelectedItemId(R.id.planEditTab);

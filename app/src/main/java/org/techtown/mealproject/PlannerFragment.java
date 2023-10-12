@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.tabs.TabLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -34,6 +35,11 @@ public class PlannerFragment extends Fragment {
     FragmentThread thread;
     public static String TAG = "plannerFragment";
 
+    TextView breakfastCategorie, breakfastMenu, lunchCategorie, lunchMenu, dinnerCategorie, dinnerMenu;
+    Button sunBre, sunLun, sunDin, monBre, monLun, monDin, tueBre, tueLun, tueDin, wedBre, wedLun, wedDin,
+            thuBre, thuLun, thuDin, friBre, friLun, friDin;
+
+    ArrayList<Button> Button = new ArrayList<>();
 
 
     public static PlannerFragment newInstance() {
@@ -107,20 +113,103 @@ public class PlannerFragment extends Fragment {
         today.setText(dateFormat.format(currentTime));
         Log.d("Date", dateFormat.format(currentTime).toString());
     }
+
+    public void defineViewID(ViewGroup rootView) {
+        breakfastCategorie = rootView.findViewById(R.id.breakfastCategorie);
+        lunchCategorie = rootView.findViewById(R.id.lunchCategorie);
+        dinnerCategorie = rootView.findViewById(R.id.dinnerCategorie);
+        breakfastMenu = rootView.findViewById(R.id.breakfastMenu);
+        lunchMenu = rootView.findViewById(R.id.lunchMenu);
+        dinnerMenu = rootView.findViewById(R.id.dinnerMenu);
+
+        sunBre = rootView.findViewById(R.id.sun_b);
+        sunLun = rootView.findViewById(R.id.sun_l);
+        sunDin = rootView.findViewById(R.id.sun_d);
+        monBre = rootView.findViewById(R.id.mon_b);
+        monLun = rootView.findViewById(R.id.mon_l);
+        monDin = rootView.findViewById(R.id.mon_d);
+        tueBre = rootView.findViewById(R.id.tue_b);
+        tueLun = rootView.findViewById(R.id.tue_l);
+        tueDin = rootView.findViewById(R.id.tue_d);
+        wedBre = rootView.findViewById(R.id.wed_b);
+        wedLun = rootView.findViewById(R.id.wed_l);
+        wedDin = rootView.findViewById(R.id.wed_d);
+        thuBre = rootView.findViewById(R.id.thu_b);
+        thuLun = rootView.findViewById(R.id.thu_l);
+        thuDin = rootView.findViewById(R.id.thu_d);
+        friBre = rootView.findViewById(R.id.fri_b);
+        friLun = rootView.findViewById(R.id.fri_l);
+        friDin = rootView.findViewById(R.id.fri_d);
+        Button.add(sunBre);
+        Button.add(sunLun);
+        Button.add(sunDin);
+        Button.add(monBre);
+        Button.add(monLun);
+        Button.add(monDin);
+        Button.add(tueBre);
+        Button.add(tueLun);
+        Button.add(tueDin);
+        Button.add(wedBre);
+        Button.add(wedLun);
+        Button.add(wedDin);
+        Button.add(thuBre);
+        Button.add(thuLun);
+        Button.add(thuDin);
+        Button.add(friBre);
+        Button.add(friLun);
+        Button.add(friDin);
+
+    }
     public void clickResetButton(ViewGroup rootView) {
         Button resetButton = rootView.findViewById(R.id.reset_button);
         resetButton.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("안내");
             builder.setMessage("식단표를 초기화하시겠습니까?");
-            DailyPlannerFragment dailyPlannerFragment = new DailyPlannerFragment();
-            TextView breakfastCategorie = rootView.findViewById(R.id.breakfastCategorie);
-            TextView lunchCategorie = rootView.findViewById(R.id.lunchCategorie);
-            TextView dinnerCategorie = rootView.findViewById(R.id.dinnerCategorie);
-            TextView breakfastMenu = rootView.findViewById(R.id.breakfastMenu);
-            TextView lunchMenu = rootView.findViewById(R.id.lunchMenu);
-            TextView dinnerMenu = rootView.findViewById(R.id.dinnerMenu);
 
+            breakfastCategorie = rootView.findViewById(R.id.breakfastCategorie);
+            lunchCategorie = rootView.findViewById(R.id.lunchCategorie);
+            dinnerCategorie = rootView.findViewById(R.id.dinnerCategorie);
+            breakfastMenu = rootView.findViewById(R.id.breakfastMenu);
+            lunchMenu = rootView.findViewById(R.id.lunchMenu);
+            dinnerMenu = rootView.findViewById(R.id.dinnerMenu);
+
+            sunBre = rootView.findViewById(R.id.sun_b);
+            sunLun = rootView.findViewById(R.id.sun_l);
+            sunDin = rootView.findViewById(R.id.sun_d);
+            monBre = rootView.findViewById(R.id.mon_b);
+            monLun = rootView.findViewById(R.id.mon_l);
+            monDin = rootView.findViewById(R.id.mon_d);
+            tueBre = rootView.findViewById(R.id.tue_b);
+            tueLun = rootView.findViewById(R.id.tue_l);
+            tueDin = rootView.findViewById(R.id.tue_d);
+            wedBre = rootView.findViewById(R.id.wed_b);
+            wedLun = rootView.findViewById(R.id.wed_l);
+            wedDin = rootView.findViewById(R.id.wed_d);
+            thuBre = rootView.findViewById(R.id.thu_b);
+            thuLun = rootView.findViewById(R.id.thu_l);
+            thuDin = rootView.findViewById(R.id.thu_d);
+            friBre = rootView.findViewById(R.id.fri_b);
+            friLun = rootView.findViewById(R.id.fri_l);
+            friDin = rootView.findViewById(R.id.fri_d);
+            Button.add(sunBre);
+            Button.add(sunLun);
+            Button.add(sunDin);
+            Button.add(monBre);
+            Button.add(monLun);
+            Button.add(monDin);
+            Button.add(tueBre);
+            Button.add(tueLun);
+            Button.add(tueDin);
+            Button.add(wedBre);
+            Button.add(wedLun);
+            Button.add(wedDin);
+            Button.add(thuBre);
+            Button.add(thuLun);
+            Button.add(thuDin);
+            Button.add(friBre);
+            Button.add(friLun);
+            Button.add(friDin);
 
             builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
                 @Override
@@ -130,13 +219,22 @@ public class PlannerFragment extends Fragment {
                         thread.start();
                     }
 
-                    breakfastCategorie.setText("카테고리");
-                    lunchCategorie.setText("카테고리");
-                    dinnerCategorie.setText("카테고리");
+                    if(dailyWeekly.equals("daily")) {
+                        breakfastCategorie.setText("카테고리");
+                        lunchCategorie.setText("카테고리");
+                        dinnerCategorie.setText("카테고리");
 
-                    breakfastMenu.setText("메인메뉴\n서브메뉴\n서브메뉴");
-                    lunchMenu.setText("메인메뉴\n서브메뉴\n서브메뉴");
-                    dinnerMenu.setText("메인메뉴\n서브메뉴\n서브메뉴");
+                        breakfastMenu.setText("메인메뉴\n서브메뉴\n서브메뉴");
+                        lunchMenu.setText("메인메뉴\n서브메뉴\n서브메뉴");
+                        dinnerMenu.setText("메인메뉴\n서브메뉴\n서브메뉴");
+
+                    }
+
+                    else if(dailyWeekly.equals("weekly")){
+                        for (Button button : Button) {
+                            button.setText(null);
+                        }
+                    }
 
                     Toast.makeText(context, "초기화가 완료되었습니다.", Toast.LENGTH_SHORT).show();
                 }
