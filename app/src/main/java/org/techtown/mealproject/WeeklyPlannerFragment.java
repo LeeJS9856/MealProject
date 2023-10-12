@@ -29,8 +29,12 @@ public class WeeklyPlannerFragment extends Fragment {
     TabLayout.OnTabSelectedListener listener;
     private final String TAG = "WeeklyPlannerFragment";
 
-    Button sunBre, sunLun, sunDin, monBre, monLun, monDin, tueBre, tueLun, tueDin, wedBre, wedLun, wedDin,
-    thuBre, thuLun, thuDin, friBre, friLun, friDin;
+    Button  sunBre, sunLun, sunDin,
+            monBre, monLun, monDin,
+            tueBre, tueLun, tueDin,
+            wedBre, wedLun, wedDin,
+            thuBre, thuLun, thuDin,
+            friBre, friLun, friDin;
     ArrayList<Button> Button = new ArrayList<>();
     @Override
     public void onAttach(@NonNull Context context) {
@@ -94,8 +98,10 @@ public class WeeklyPlannerFragment extends Fragment {
 
 
     public void initButtonMenu() {
-        for(int i=0;i<Button.size();i++) {
-            loadButtonMenu(DatabaseName.TABLE.get(i), Button.get(i));
+        int count = 0;
+        for(String table : DatabaseName.TABLE) {
+            loadButtonMenu(table, Button.get(count));
+            count++;
         }
     }
     public int loadButtonMenu(String table, Button buttonText) {
