@@ -30,12 +30,8 @@ public class DailyPlannerFragment extends Fragment {
     TabLayout.OnTabSelectedListener listener;
     private final String TAG = "DailyPlannerFragment";
 
-    TextView breakfastCategorie;
-    TextView lunchCategorie;
-    TextView dinnerCategorie;
-    TextView breakfastMenu;
-    TextView lunchMenu;
-    TextView dinnerMenu;
+    TextView breakfastCategorie,lunchCategorie,dinnerCategorie;
+    TextView breakfastMenu,lunchMenu,dinnerMenu;
     String table_bre = "";
     String table_lun = "";
     String table_din = "";

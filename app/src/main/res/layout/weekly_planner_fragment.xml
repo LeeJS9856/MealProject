@@ -274,7 +274,7 @@
                         android:layout_height="match_parent"
                         android:text="fri_b" />
                     <Button
-                        android:id="@+id/fir_l"
+                        android:id="@+id/fri_l"
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
