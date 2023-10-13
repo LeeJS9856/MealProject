@@ -55,7 +55,7 @@ public class EditPlanFragment extends Fragment{
 
     private int position = 0;
 
-    public static String choicedTable = DatabaseName.TABLE_PLANNER;
+    public static String choicedTable = DatabaseName.TABLE_SUN_BRE;
     int listCount = 0;
 
     public static EditPlanFragment newInstance() {
@@ -370,7 +370,7 @@ public class EditPlanFragment extends Fragment{
         else if (week.equals("목요일") && time.equals("중식")) { choicedTable = DatabaseName.TABLE_THU_LUN; println(choicedTable);}
         else if (week.equals("목요일") && time.equals("석식")) { choicedTable = DatabaseName.TABLE_THU_DIN; println(choicedTable);}
         else if (week.equals("금요일") && time.equals("조식")) { choicedTable = DatabaseName.TABLE_FRI_BRE; println(choicedTable);}
-        else if (week.equals("믐요일") && time.equals("중식")) { choicedTable = DatabaseName.TABLE_FRI_LUN; println(choicedTable);}
+        else if (week.equals("금요일") && time.equals("중식")) { choicedTable = DatabaseName.TABLE_FRI_LUN; println(choicedTable);}
         else if (week.equals("금요일") && time.equals("석식")) { choicedTable = DatabaseName.TABLE_FRI_DIN; println(choicedTable);}
         else{println("올바른 대상이 아닙니다"); println(choicedTable);}
     }

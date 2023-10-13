@@ -5,7 +5,6 @@ import java.util.List;
 
 public class DatabaseName {
     public static String PLANNER_DATABASE = "planner.db";
-    public static String TABLE_PLANNER = "planner";
 
     public static String TABLE_SUN_BRE = "SunBre";
     public static String TABLE_SUN_LUN = "SunLun";
